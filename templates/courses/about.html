@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}About Independent Test Prep LMS - Free GED&reg; & SAT&reg; Study Support{% endblock %}
+{% block meta_description %}Learn about Independent Test Prep LMS, a free study site with original GED&reg; and SAT&reg; lessons, topic-based courses, worked examples, and practice questions.{% endblock %}
+{% block og_title %}About Independent Test Prep LMS{% endblock %}
+{% block og_description %}A free, independent learning site built to help GED&reg; and SAT&reg; learners study with clear lessons, practice, and progress-focused guidance.{% endblock %}
+
+{% block extra_head %}
+<style>
+    .about-hero {
+        background: #eef3f9;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 1.65rem 1.35rem;
+        margin: 1rem 0 1.25rem;
+    }
+    .about-kicker {
+        color: #2563eb;
+        font-size: .78rem;
+        font-weight: 800;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        margin: 0 0 .45rem;
+    }
+    .about-hero h1 {
+        color: #0f172a;
+        font-size: 2rem;
+        line-height: 1.15;
+        margin: 0 0 .75rem;
+    }
+    .about-hero p {
+        color: #475569;
+        font-size: 1.05rem;
+        margin: 0;
+        max-width: 42rem;
+    }
+    .about-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .6rem;
+        margin-top: 1.1rem;
+    }
+    .about-button {
+        display: inline-block;
+        background: #2563eb;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 700;
+        padding: .62rem 1rem;
+    }
+    .about-button:hover {
+        background: #1d4ed8;
+    }
+    .about-button.secondary {
+        background: #fbfaf7;
+        border: 1px solid #c7d2fe;
+        color: #2563eb;
+    }
+    .about-section {
+        margin: 1.45rem 0;
+    }
+    .about-section h2 {
+        color: #0f172a;
+        font-size: 1.35rem;
+        margin: 0 0 .55rem;
+    }
+    .about-section p {
+        margin: .45rem 0;
+    }
+    .about-grid {
+        display: grid;
+        gap: .75rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        margin-top: .8rem;
+    }
+    .about-panel {
+        background: #f8f7f3;
+        border: 1px solid #e2e0d7;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    .about-panel h3 {
+        color: #1e3a8a;
+        font-size: 1rem;
+        margin: 0 0 .35rem;
+    }
+    .about-panel p {
+        color: #475569;
+        font-size: .95rem;
+        margin: 0;
+    }
+    .about-list {
+        margin: .55rem 0 0;
+        padding-left: 1.15rem;
+    }
+    .about-list li {
+        margin: .35rem 0;
+    }
+    .about-note {
+        border-left: 4px solid #2563eb;
+        background: #f0f9ff;
+        border-radius: 0 8px 8px 0;
+        padding: .9rem 1rem;
+        margin: 1.5rem 0;
+    }
+    @media (max-width: 540px) {
+        .about-hero {
+            padding: 1.3rem 1rem;
+        }
+        .about-hero h1 {
+            font-size: 1.55rem;
+        }
+        .about-button {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="about-hero">
+    <p class="about-kicker">About the site</p>
+    <h1>Clear, independent test prep for learners who need a practical path forward.</h1>
+    <p>Independent Test Prep LMS is a free learning site for GED&reg; and SAT&reg; preparation. It brings lessons, worked examples, diagrams, diagnostic guidance, and practice questions into one place so students can study with structure instead of guessing what to do next.</p>
+    <div class="about-actions">
+        <a class="about-button" href="{% url 'courses:home' %}#courses">Browse courses</a>
+        <a class="about-button secondary" href="{% url 'practice:diagnostic_home' %}">Take the diagnostic</a>
+    </div>
+</section>
+
+<section class="about-section">
+    <h2>Why this site exists</h2>
+    <p>Many learners preparing for high-stakes exams are not starting from the same place. Some are returning to school after years away. Some are balancing work, family, and study time. Some know the content but need practice reading test-style questions. Others need the basics rebuilt patiently, one topic at a time.</p>
+    <p>This site is designed for that reality. The goal is to make study feel organized, honest, and doable: find the right starting point, learn the skill, practice it, and move forward with a little more confidence.</p>
+</section>
+
+<section class="about-section">
+    <h2>What learners can do here</h2>
+    <div class="about-grid">
+        <div class="about-panel">
+            <h3>Study by topic</h3>
+            <p>Courses are grouped by program, subject, and topic family so learners can jump directly to math foundations, algebra, geometry, science, language arts, social studies, or SAT&reg; review.</p>
+        </div>
+        <div class="about-panel">
+            <h3>Learn step by step</h3>
+            <p>Lessons use plain language, worked examples, and diagrams where they help. The emphasis is understanding the method, not memorizing a trick.</p>
+        </div>
+        <div class="about-panel">
+            <h3>Practice with feedback</h3>
+            <p>Practice questions include explanations so learners can see why an answer works and where common mistakes usually happen.</p>
+        </div>
+        <div class="about-panel">
+            <h3>Find a starting point</h3>
+            <p>The diagnostic quiz helps learners identify stronger and weaker areas, then points them toward courses that match what they need to review.</p>
+        </div>
+    </div>
+</section>
+
+<section class="about-section">
+    <h2>How the content is created</h2>
+    <p>All lessons, examples, and practice questions are independently created for study purposes. The content is written to reflect the skills learners commonly need for GED&reg; and SAT&reg; preparation, while avoiding copied official test questions or proprietary exam material.</p>
+    <ul class="about-list">
+        <li>Lessons focus on practical explanations and repeatable problem-solving routines.</li>
+        <li>Math courses are organized into smaller topic paths so students do not have to scroll through one long catalog.</li>
+        <li>Questions are built for practice and learning, with explanations that show the reasoning behind the answer.</li>
+        <li>The site is meant to keep improving over time as more courses, questions, and learner-support features are added.</li>
+    </ul>
+</section>
+
+<section class="about-section">
+    <h2>Who it is for</h2>
+    <p>Independent Test Prep LMS is useful for adult learners, high school students, tutors, parents, guardians, and adult education programs looking for a straightforward study resource. Learners can start without an account, browse lessons freely, and use practice tools to build momentum.</p>
+    <p>For younger learners, the site should be used with appropriate parent, guardian, school, or responsible adult permission. More detail is available on the <a href="{% url 'courses:parents_minors' %}">Parents &amp; Minors</a> page.</p>
+</section>
+
+<section class="about-section">
+    <h2>Our learning values</h2>
+    <div class="about-grid">
+        <div class="about-panel">
+            <h3>Clarity over clutter</h3>
+            <p>Pages are kept focused so learners can find the lesson or practice set they need without sorting through unnecessary noise.</p>
+        </div>
+        <div class="about-panel">
+            <h3>Confidence through practice</h3>
+            <p>Progress comes from repeated, understandable practice. The site supports that rhythm with lessons, questions, and explanations in the same course path.</p>
+        </div>
+        <div class="about-panel">
+            <h3>Respect for learners</h3>
+            <p>The site is free to begin, avoids ads, and is built around useful study support rather than pressure or promises.</p>
+        </div>
+    </div>
+</section>
+
+<section class="about-note">
+    <h2>Independent and transparent</h2>
+    <p>Independent Test Prep LMS is not affiliated with, endorsed by, sponsored by, or approved by GED Testing Service LLC, the American Council on Education, College Board, or any official testing organization. GED&reg; and SAT&reg; names are used only to identify the exams learners may be preparing for.</p>
+    <p>For the full legal language, please review the <a href="{% url 'courses:copyright_trademark_disclaimer' %}">Copyright and Trademark Disclaimer</a>, <a href="{% url 'courses:terms_of_use' %}">Terms of Use</a>, and <a href="{% url 'courses:privacy_policy' %}">Privacy Policy</a>.</p>
+</section>
+{% endblock %}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Free GED&reg; & SAT&reg; Test Prep: Lessons & Practice Questions{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Free GED&reg; and SAT&reg; test-prep lessons with worked examples, diagrams, and multiple-choice practice across math, science, social studies, reading, and writing.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}GED&reg; practice, GED&reg; math, GED&reg; geometry, SAT&reg; prep, free test prep, practice questions, GED&reg; study guide{% endblock %}">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Independent Test Prep LMS">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Independent Test Prep LMS">
+    <meta property="og:title" content="{% block og_title %}Free GED&reg; & SAT&reg; Test Prep: Lessons & Practice Questions{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Free GED&reg; and SAT&reg; test-prep lessons and multiple-choice practice across every subject.{% endblock %}">
+    <meta name="twitter:card" content="summary">
+    <style>
+        /* Eye-comfort palette: soft warm canvas + paper-like surfaces (no pure
+           white) and softened ink, to reduce glare during long study sessions.
+           Figures keep a crisp white frame so graphic quality is unaffected. */
+        body { font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 1rem; line-height: 1.6; color: #29292b; background: #ecebe6; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #dcdacf; padding-bottom: .5rem; }
+        a { color: #2563eb; text-decoration: none; }
+        .card { border: 1px solid #e2e0d7; border-radius: 8px; padding: 1rem; margin: .75rem 0; background: #f8f7f3; }
+        .intro { background:#eef3f9; border-color:#cbd5e1; }
+        .badge { background:#2563eb; color:#fff; padding:.1rem .5rem; border-radius:4px; font-size:.8rem; }
+        button { background:#2563eb; color:#fff; border:none; padding:.5rem 1rem; border-radius:6px; cursor:pointer; }
+        textarea { width:100%; min-height:120px; }
+        .feedback { background:#f0f9ff; border-left:4px solid #2563eb; padding:1rem; white-space:pre-wrap; }
+        figure.chart { margin:1.25rem 0; text-align:center; }
+        figure.chart svg { display:inline-block; max-width:100%; height:auto; background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:.5rem; }
+        figure.chart figcaption { font-size:.85rem; color:#6b7280; margin-top:.4rem; }
+        table.data-table { border-collapse:collapse; width:100%; margin:1rem 0; font-size:.95rem; }
+        table.data-table th, table.data-table td { border:1px solid #d1d5db; padding:.5rem .75rem; text-align:left; }
+        table.data-table thead th { background:#2563eb; color:#fff; font-weight:600; }
+        table.data-table tbody tr:nth-child(even) { background:#f3f4f6; }
+        table.data-table tbody tr:hover { background:#eff6ff; }
+        .self-check { border-left:4px solid #16a34a; background:#f0fdf4; padding:.85rem 1rem; margin:1rem 0; border-radius:0 8px 8px 0; }
+        .self-check p { margin:.35rem 0; }
+        .self-check-row { display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.55rem; }
+        .self-check input { flex:1 1 180px; min-width:0; padding:.5rem; border:1px solid #bbf7d0; border-radius:6px; font:inherit; }
+        .self-check button { background:#15803d; padding:.45rem .75rem; }
+        .self-check .hint-btn { background:#4b5563; }
+        .self-check-feedback { font-weight:600; }
+        .self-check-feedback.correct { color:#15803d; }
+        .self-check-feedback.incorrect { color:#b45309; }
+        .self-check-hint { color:#374151; font-size:.95rem; }
+        .subject-tabs { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 .5rem; }
+        .subject-tabs a { padding:.35rem .9rem; border:1px solid #e5e7eb; border-radius:999px; color:#2563eb; font-size:.9rem; }
+        .subject-tabs a.active { background:#2563eb; color:#fff; border-color:#2563eb; }
+        .program-heading { margin-top:1.75rem; font-size:1.6rem; color:#111827; }
+        .subject-heading { margin:1rem 0 .25rem; padding-bottom:.25rem; border-bottom:2px solid #eee; color:#374151; font-size:1.05rem; }
+        .coming-soon { color:#9ca3af; font-style:italic; margin:.5rem 0 0; }
+        .series-back { font-size:.9rem; color:#6b7280; margin:.2rem 0 .6rem; }
+        .series-path { list-style:none; padding:0; margin:.6rem 0 0; }
+        .series-path li { display:flex; gap:.75rem; align-items:flex-start; padding:.55rem 0; border-top:1px solid #e2e0d7; }
+        .series-path li:first-child { border-top:0; }
+        .series-num { flex:0 0 1.7rem; height:1.7rem; border-radius:50%; background:#2563eb; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:.85rem; }
+        .series-path a { font-weight:600; }
+        .series-meta { display:block; color:#6b7280; font-size:.85rem; }
+        footer { border-top:1px solid #e5e7eb; color:#6b7280; font-size:.85rem; margin-top:2rem; padding:1rem 0 0; }
+        footer p { margin:.25rem 0; }
+    </style>
+    <!-- MathJax: renders LaTeX formulas, e.g. \(x^2\), \(\sqrt{x}\), \(\frac{a}{b}\) -->
+    <script>
+        window.MathJax = {
+            tex: {
+                // Use \( \) for inline and \[ \] for display math.
+                // Intentionally NOT using $...$ so that currency signs ($) aren't treated as math.
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            options: { ignoreHtmlClass: 'no-mathjax', processHtmlClass: 'mathjax' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    {% block extra_head %}{% endblock %}
+    <script>
+        document.addEventListener("click", function (event) {
+            const checkButton = event.target.closest("[data-self-check-button]");
+            const hintButton = event.target.closest("[data-self-check-hint]");
+
+            if (checkButton) {
+                const box = checkButton.closest(".self-check");
+                const input = box.querySelector("input");
+                const feedback = box.querySelector(".self-check-feedback");
+                const clean = value => String(value || "")
+                    .toLowerCase()
+                    .replace(/^x=/, "")
+                    .replace(/\s+/g, "")
+                    .replace(/[,$]/g, "");
+                const answers = (box.dataset.answer || "").split(";;").map(clean);
+                const correct = answers.includes(clean(input.value));
+                feedback.className = "self-check-feedback " + (correct ? "correct" : "incorrect");
+                feedback.textContent = correct
+                    ? "Correct. Lock in the method, not just the answer."
+                    : "Not yet. Check the hint, then try one more time.";
+            }
+
+            if (hintButton) {
+                const box = hintButton.closest(".self-check");
+                const hint = box.querySelector(".self-check-hint");
+                hint.hidden = !hint.hidden;
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <a href="{% url 'courses:home' %}"><strong>Independent Test Prep LMS</strong></a>
+        <div>
+            <a href="{% url 'courses:about' %}">About</a> |
+            {% if user.is_authenticated %}
+                <a href="{% url 'practice:dashboard' %}">My Progress</a> |
+                Hello, {{ user.username }} |
+                <form action="{% url 'logout' %}" method="post" style="display:inline">{% csrf_token %}<button type="submit" style="background:none;color:#2563eb;padding:0">Logout</button></form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a> |
+                <a href="{% url 'signup' %}">Sign up</a>
+            {% endif %}
+        </div>
+    </header>
+    <main>{% block content %}{% endblock %}</main>
+    <footer>
+        <p><a href="{% url 'courses:about' %}">About</a> | <a href="{% url 'courses:privacy_policy' %}">Privacy Policy</a> | <a href="{% url 'courses:terms_of_use' %}">Terms of Use</a> | <a href="{% url 'courses:copyright_trademark_disclaimer' %}">Copyright &amp; Trademarks</a> | <a href="{% url 'courses:parents_minors' %}">Parents &amp; Minors</a></p>
+        <p>Independent study practice for GED&reg; and SAT&reg; learners across math, science, social studies, reading, and writing.</p>
+        <p>All lessons and practice questions are independently created for study purposes and are not official GED&reg; or SAT&reg; test questions.</p>
+        <p>GED&reg; is a registered trademark of GED Testing Service LLC. SAT&reg; is a registered trademark of College Board. This site is independent and is not affiliated with, endorsed by, or sponsored by GED Testing Service LLC, the American Council on Education, or College Board.</p>
+    </footer>
+</body>
+</html>

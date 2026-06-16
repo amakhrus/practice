@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load richtext %}
+{% block title %}{{ course.title|exam_marks }} - Free Lessons & Practice Questions{% endblock %}
+{% block meta_description %}{{ course.description|exam_marks|striptags|truncatewords:30 }}{% endblock %}
+{% block og_title %}{{ course.title|exam_marks }}{% endblock %}
+{% block og_description %}{{ course.description|exam_marks|striptags|truncatewords:30 }}{% endblock %}
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "{{ course.title|exam_marks|escapejs }}",
+  "description": "{{ course.description|exam_marks|striptags|escapejs }}",
+  "url": "{{ request.build_absolute_uri }}",
+  "inLanguage": "en",
+  "provider": {
+    "@type": "Organization",
+    "name": "Independent Test Prep LMS"
+  },
+  "educationalLevel": "{{ course.get_program_display|exam_marks|escapejs }}",
+  "about": "{{ course.get_subject_display|escapejs }}"
+}
+</script>
+{% endblock %}
+{% block content %}
+<span class="badge">{{ course.get_program_display|exam_marks }}</span>
+<h1>{{ course.title|exam_marks }}</h1>
+{% if parent_course %}
+<p class="series-back">&#128218; Part of the <a href="{% url 'courses:course_detail' parent_course.slug %}">{{ parent_course.title|exam_marks }}</a> series &mdash; this course expands one of its topics in depth.</p>
+{% endif %}
+<p>{{ course.description|exam_marks }}</p>
+
+{% if deep_dives %}
+<section class="card intro" aria-labelledby="deep-dives-heading">
+    <h2 id="deep-dives-heading" style="margin-top:0;">Go deeper: in-depth companion courses</h2>
+    <p>Work through the overview below, then dive into any of these {{ deep_dives|length }} focused course{{ deep_dives|length|pluralize }}. Each one expands a single topic with more explanation, labeled diagrams, and extra practice questions.</p>
+    <ol class="series-path">
+        {% for dd in deep_dives %}
+        <li>
+            <span class="series-num" aria-hidden="true">{{ forloop.counter }}</span>
+            <span>
+                <a href="{% url 'courses:course_detail' dd.slug %}">{{ dd.title|exam_marks }}</a>
+                <span class="series-meta">{{ dd.num_lessons }} lesson{{ dd.num_lessons|pluralize }} &middot; {{ dd.num_questions }} practice question{{ dd.num_questions|pluralize }}</span>
+            </span>
+        </li>
+        {% endfor %}
+    </ol>
+</section>
+{% endif %}
+
+<h2>Lessons</h2>
+{% for lesson in course.lessons.all %}
+    <div class="card">
+        <h3>{{ lesson.title|exam_marks }}</h3>
+        {% if lesson.embed_url %}
+            <div style="position:relative; padding-bottom:56.25%; height:0; margin:.5rem 0;">
+                <iframe src="{{ lesson.embed_url }}" title="{{ lesson.title|exam_marks }}"
+                    style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius:8px;"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+        {% endif %}
+        <div>{{ lesson.content|richtext }}</div>
+    </div>
+{% empty %}
+    <p>No lessons yet.</p>
+{% endfor %}
+
+<h2>Practice Questions</h2>
+{% with qcount=course.mcq_count wcount=course.written_count %}
+    {% if qcount %}
+        <div class="card">
+            <p><strong>📝 Interactive Practice (Recommended)</strong></p>
+            <p>Practice one question at a time with instant feedback. See the correct answer and detailed explanation after each response.</p>
+            <a href="{% url 'practice:practice_interactive' course.slug %}"><button type="button" style="background-color: #10b981; border-color: #10b981;">Start Interactive Practice ({{ qcount }} question{{ qcount|pluralize }})</button></a>
+        </div>
+
+    {% endif %}
+    {% if wcount %}
+        <div class="card">
+            <p>Practice writing: answer {{ wcount }} open-ended prompt{{ wcount|pluralize }} in your own words, then grade yourself against a model rubric. No sign-up-only AI &mdash; you self-assess.</p>
+            <a href="{% url 'practice:written_set' course.slug %}"><button type="button">Written Response Practice ({{ wcount }})</button></a>
+        </div>
+    {% endif %}
+    {% if not qcount and not wcount %}
+        <p>No practice questions yet.</p>
+    {% endif %}
+{% endwith %}
+{% endblock %}

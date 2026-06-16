@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load richtext %}
+{% block title %}Your {{ label|exam_marks }} Diagnostic Results{% endblock %}
+{% block content %}
+<h1>Your {{ label|exam_marks }} Diagnostic Results</h1>
+
+<div class="card intro">
+    <p style="font-size:1.15rem; margin:.2rem 0"><strong>{{ correct }} / {{ total }}</strong> correct.</p>
+</div>
+
+{% if recommended %}
+    <h2>Start with these courses</h2>
+    <p>We flag a topic for review when you get fewer than two of its three questions right. Based on the
+    topics where you fell below that mark, these courses will help you the most &mdash; each is listed
+    with the exact skills to focus on first.</p>
+    {% for rec in recommended %}
+        <div class="card">
+            <h3 style="margin:.2rem 0"><a href="{% url 'courses:course_detail' rec.course.slug %}">{{ rec.course.title|exam_marks }}</a></h3>
+            <p style="margin:.3rem 0"><strong>Focus on:</strong> {{ rec.topics|join:", " }}</p>
+            <a href="{% url 'practice:practice_set' rec.course.slug %}">Jump to practice questions &rarr;</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="card">
+        <h2 style="margin:.2rem 0">Great work &mdash; you're proficient in every topic! &#127881;</h2>
+        <p>You scored at or above the proficiency mark on all of them. You're ready to rehearse under
+        real conditions with a full-length practice test:</p>
+        {% for course in ready %}
+            <p style="margin:.4rem 0"><a href="{% url 'courses:course_detail' course.slug %}">{{ course.title|exam_marks }}</a></p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<h2>Your results by topic</h2>
+<div class="card">
+    <ul style="margin:.2rem 0; padding-left:1.2rem">
+        {% for t in topic_results %}
+            <li style="margin:.3rem 0">
+                {% if t.needs_review %}
+                    <span style="color:#dc2626; font-weight:600">Needs review</span>
+                {% else %}
+                    <span style="color:#15803d; font-weight:600">Strong</span>
+                {% endif %}
+                &mdash; {{ t.topic }} <span style="color:#6b7280">({{ t.correct }}/{{ t.total }})</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<p style="margin-top:1rem">
+    <a href="{% url 'practice:diagnostic_quiz' program %}"><button type="button">Retake the diagnostic</button></a>
+    &nbsp; <a href="{% url 'courses:home' %}">Browse all courses</a>
+</p>
+{% endblock %}

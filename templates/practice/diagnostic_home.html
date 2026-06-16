@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load richtext %}
+{% block title %}Diagnostic Pre-Test - Find Where to Start{% endblock %}
+{% block meta_description %}Take a short, free diagnostic quiz and get personalized GED&reg; or SAT&reg; course recommendations based on the topics you should review.{% endblock %}
+{% block content %}
+<h1>Diagnostic Pre-Test</h1>
+
+<div class="card intro">
+    <p style="margin:.2rem 0">Not sure where to start? Take a short quiz and we'll point you to the
+    courses that match the topics you most need to review. It's free, no sign-in required, and your
+    answers aren't stored.</p>
+</div>
+
+<p>Which test are you preparing for?</p>
+
+{% for p in programs %}
+    <div class="card">
+        <h3 style="margin:.2rem 0"><a href="{% url 'practice:diagnostic_quiz' p.code %}">{{ p.label|exam_marks }} Diagnostic</a></h3>
+        <p style="margin:.3rem 0">{{ p.blurb }}</p>
+        <a href="{% url 'practice:diagnostic_quiz' p.code %}"><button type="button">Start the {{ p.label|exam_marks }} diagnostic &rarr;</button></a>
+    </div>
+{% endfor %}
+
+<p style="margin-top:1rem"><a href="{% url 'courses:home' %}">&larr; Browse all courses instead</a></p>
+{% endblock %}

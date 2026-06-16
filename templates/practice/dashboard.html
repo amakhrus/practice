@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load richtext %}
+{% block title %}My Progress{% endblock %}
+{% block content %}
+<h1>My Progress</h1>
+
+{% if not has_data %}
+    <div class="card intro">
+        <p style="margin:.2rem 0">You haven't answered any practice questions yet. Once you do, this page
+        will track your accuracy and progress in every course.</p>
+        <p style="margin:.6rem 0 0">
+            <a href="{% url 'practice:diagnostic_home' %}"><button type="button">Take the diagnostic &rarr;</button></a>
+            &nbsp; <a href="{% url 'courses:home' %}">Browse courses</a>
+        </p>
+    </div>
+{% else %}
+    <div class="card intro">
+        <div style="display:flex; flex-wrap:wrap; gap:1.5rem; align-items:baseline">
+            <div><span style="font-size:1.8rem; font-weight:700">{{ overall_accuracy }}%</span><br><span style="color:#6b7280; font-size:.9rem">overall accuracy</span></div>
+            <div><span style="font-size:1.8rem; font-weight:700">{{ overall_correct }}/{{ overall_answered }}</span><br><span style="color:#6b7280; font-size:.9rem">questions correct (latest try)</span></div>
+            <div><span style="font-size:1.8rem; font-weight:700">{{ total_submitted }}</span><br><span style="color:#6b7280; font-size:.9rem">total answers submitted</span></div>
+            {% if overall_written %}<div><span style="font-size:1.8rem; font-weight:700">{{ overall_written }}</span><br><span style="color:#6b7280; font-size:.9rem">written responses practiced</span></div>{% endif %}
+        </div>
+    </div>
+
+    <h2>By course</h2>
+    {% for row in course_rows %}
+        <div class="card">
+            <h3 style="margin:.2rem 0"><a href="{% url 'courses:course_detail' row.course.slug %}">{{ row.course.title|exam_marks }}</a></h3>
+            <p style="margin:.3rem 0; color:#374151">
+                {% if row.answered %}<strong>{{ row.accuracy }}%</strong> accuracy &middot; {{ row.answered }} of {{ row.total }} questions tried{% else %}No multiple-choice questions tried yet{% endif %}
+                {% if row.written %}<span style="color:#6b7280">&middot; {{ row.written }} written response{{ row.written|pluralize }} practiced</span>{% endif %}
+            </p>
+            <div style="background:#e5e7eb; border-radius:999px; height:10px; overflow:hidden" title="{{ row.coverage }}% of this course attempted">
+                <div style="background:#2563eb; height:10px; width:{{ row.coverage }}%"></div>
+            </div>
+            <p style="margin:.4rem 0 0"><a href="{% url 'practice:practice_set' row.course.slug %}">Practice this course &rarr;</a></p>
+        </div>
+    {% endfor %}
+
+    <h2>Recent activity</h2>
+    <div class="card">
+        <ul style="margin:.2rem 0; padding-left:1.2rem">
+            {% for r in recent %}
+                <li style="margin:.35rem 0">
+                    {% if r.is_correct is None %}
+                        <span style="color:#6b7280; font-weight:600" title="Written response (self-assessed)">&#9998;</span>
+                    {% elif r.is_correct %}
+                        <span style="color:#15803d; font-weight:600">&#10003;</span>
+                    {% else %}
+                        <span style="color:#dc2626; font-weight:600">&#10007;</span>
+                    {% endif %}
+                    {{ r.snippet|exam_marks }}
+                    <span style="color:#6b7280; font-size:.85rem">&mdash; {{ r.course.title|exam_marks }}, {{ r.created_at|date:"M j, Y" }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% endblock %}

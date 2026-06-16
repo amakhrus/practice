@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Create your free account{% endblock %}
+{% block meta_description %}Create a free account to save your progress, track your practice accuracy, and pick up where you left off across every GED&reg; and SAT&reg; course.{% endblock %}
+
+{% block extra_head %}
+<style>
+    .su-wrap { max-width: 30rem; margin: .5rem auto; }
+    .su-head { text-align: center; margin-bottom: 1rem; }
+    .su-head h1 { margin: .2rem 0 .35rem; font-size: 1.7rem; color: #0f172a; }
+    .su-head p { margin: 0; color: #475569; }
+    .su-card { background: #f8f7f3; border: 1px solid #e2e0d7; border-radius: 14px; padding: 1.4rem 1.5rem; }
+    .su-field { margin: 0 0 1rem; }
+    .su-field label { display: block; font-weight: 700; color: #0f172a; margin-bottom: .3rem; }
+    .su-field input { width: 100%; padding: .6rem .7rem; border: 1px solid #cbd5e1; border-radius: 8px;
+        font: inherit; background: #fff; }
+    .su-field input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+    .su-field .helptext { display: block; color: #64748b; font-size: .82rem; margin-top: .3rem; }
+    .su-field ul { margin: .35rem 0 0; padding-left: 1.1rem; color: #64748b; font-size: .82rem; }
+    .su-submit { width: 100%; padding: .7rem 1rem; font-size: 1rem; font-weight: 700; border-radius: 9px; }
+    .su-errors { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; border-radius: 9px;
+        padding: .6rem .8rem; margin: 0 0 1rem; font-size: .9rem; }
+    .su-errors ul { margin: .2rem 0 0; padding-left: 1.1rem; }
+    .su-alt { text-align: center; margin: 1rem 0 0; color: #475569; }
+    .su-consent { font-size: .85rem; color: #475569; margin: 1rem 0 0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="su-wrap">
+    <div class="su-head">
+        <h1>Create your free account</h1>
+        <p>Save your progress and track your accuracy across every course. <b>100% free.</b></p>
+    </div>
+
+    <div class="su-card">
+        {% if form.non_field_errors %}
+            <div class="su-errors">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="su-field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}<span class="helptext">{{ field.help_text|safe }}</span>{% endif %}
+                    {% if field.errors %}<div class="su-errors">{{ field.errors }}</div>{% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="su-submit">Create account</button>
+        </form>
+
+        <p class="su-alt">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+    </div>
+
+    <p class="su-consent">By creating an account you agree to our
+        <a href="{% url 'courses:terms_of_use' %}">Terms of Use</a> and
+        <a href="{% url 'courses:privacy_policy' %}">Privacy Policy</a>.
+        Learners under 13 should sign up only with parent, guardian, or school consent, and learners under 18
+        with permission from a responsible adult. See <a href="{% url 'courses:parents_minors' %}">Parents &amp; Minors</a>.</p>
+</div>
+{% endblock %}

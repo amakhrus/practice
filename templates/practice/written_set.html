@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load richtext %}
+{% block title %}Written Response Practice - {{ course.title|exam_marks }}{% endblock %}
+{% block content %}
+<a href="{% url 'courses:course_detail' course.slug %}">&larr; Back to course</a>
+<h1>Written Response Practice: {{ course.title|exam_marks }}</h1>
+
+{% if submitted %}
+    <div class="card" style="background:#f0f9ff; border-left:4px solid #2563eb;">
+        <h3 style="margin-top:0">Now grade yourself</h3>
+        <p style="margin:.2rem 0">Your responses are saved below. Compare each one to the model rubric and
+        honestly judge how many of its points you covered. (These answers are not auto-graded.)</p>
+        <a href="{% url 'practice:written_set' course.slug %}"><button type="button">Try again</button></a>
+    </div>
+{% else %}
+    <p>Write your answer to each prompt in your own words. When you submit, a model rubric will appear so
+    you can grade yourself against it. There's no time limit, and answers aren't auto-graded.</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {% for q in questions %}
+        <div class="card">
+            <div class="question-text"><strong>Q{{ forloop.counter }}.</strong> {{ q.text|richtext }}</div>
+
+            <textarea name="q{{ q.id }}" placeholder="Type your response here..."
+                {% if submitted %}readonly{% endif %}>{{ q.answer }}</textarea>
+
+            {% if submitted %}
+                {% if q.answer %}
+                    <div class="self-check" style="border-left-color:#2563eb; background:#eff6ff">
+                        <strong>Model rubric &mdash; grade yourself against this</strong>
+                        <div style="margin-top:.4rem">{{ q.rubric|richtext }}</div>
+                    </div>
+                {% else %}
+                    <p style="color:#b45309"><em>You left this one blank.</em> Try writing a response, then
+                    compare it to the rubric.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No written-response prompts for this course yet.</p>
+    {% endfor %}
+
+    {% if questions and not submitted %}
+        <button type="submit">Submit &amp; reveal the rubric</button>
+    {% endif %}
+</form>
+{% endblock %}

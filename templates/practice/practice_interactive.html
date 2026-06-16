@@ -1,0 +1,627 @@
+{% extends "base.html" %}
+{% load richtext %}
+
+{% block title %}Practice - {{ course.title|exam_marks }}{% endblock %}
+
+{% block extra_head %}
+<style>
+    :root {
+        --primary: #2563eb;
+        --success: #059669;
+        --error: #dc2626;
+        --warning: #f59e0b;
+        --light-primary: #eff6ff;
+        --light-success: #ecfdf5;
+        --light-error: #fef2f2;
+    }
+
+    .practice-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .practice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .practice-title {
+        margin: 0;
+        font-size: 1.25rem;
+        color: #1f2937;
+    }
+
+    .progress-bar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .progress-text {
+        font-size: 0.9rem;
+        color: #6b7280;
+        font-weight: 500;
+        min-width: 80px;
+    }
+
+    .progress-fill {
+        width: 150px;
+        height: 6px;
+        background: #e5e7eb;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .progress-fill-inner {
+        height: 100%;
+        background: var(--primary);
+        transition: width 0.3s ease;
+    }
+
+    /* Timer */
+    .timer {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 1rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        background: #f3f4f6;
+        color: #374151;
+        border: 2px solid #e5e7eb;
+        transition: background .3s, color .3s, border-color .3s;
+        min-width: 80px;
+        justify-content: center;
+    }
+    .timer.warning {
+        background: #fffbeb;
+        color: #b45309;
+        border-color: #fcd34d;
+    }
+    .timer.danger {
+        background: #fef2f2;
+        color: var(--error);
+        border-color: #fca5a5;
+        animation: pulse 0.6s ease-in-out infinite alternate;
+    }
+    .timer.stopped {
+        opacity: 0.45;
+    }
+    @keyframes pulse {
+        from { transform: scale(1); }
+        to   { transform: scale(1.06); }
+    }
+
+    .timeout-banner {
+        background: #fef2f2;
+        border-left: 4px solid var(--error);
+        color: var(--error);
+        font-weight: 600;
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        display: none;
+    }
+
+    .question-card {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        padding: 40px;
+        margin-bottom: 30px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .question-number {
+        font-size: 0.85rem;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        font-weight: 600;
+    }
+
+    .question-text {
+        font-size: 1.25rem;
+        color: #1f2937;
+        line-height: 1.6;
+        margin-bottom: 30px;
+        font-weight: 500;
+    }
+
+    .choices-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .choice-option {
+        position: relative;
+    }
+
+    .choice-option input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+    }
+
+    .choice-label {
+        display: block;
+        padding: 16px 16px 16px 48px;
+        background: #f9fafb;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 1rem;
+        color: #1f2937;
+        position: relative;
+    }
+
+    .choice-label::before {
+        content: '';
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d1d5db;
+        border-radius: 50%;
+        background: white;
+        transition: all 0.2s ease;
+    }
+
+    .choice-option input[type="radio"]:checked + .choice-label {
+        border-color: var(--primary);
+        background: var(--light-primary);
+    }
+
+    .choice-option input[type="radio"]:checked + .choice-label::before {
+        border-color: var(--primary);
+        background: var(--primary);
+        box-shadow: inset 0 0 0 3px white;
+    }
+
+    .choice-option input[type="radio"]:disabled + .choice-label {
+        cursor: not-allowed;
+        opacity: 0.9;
+    }
+
+    /* After answer is submitted */
+    .choice-option.correct input[type="radio"]:checked + .choice-label {
+        border-color: var(--success);
+        background: var(--light-success);
+    }
+
+    .choice-option.correct input[type="radio"]:checked + .choice-label::before {
+        border-color: var(--success);
+        background: var(--success);
+    }
+
+    .choice-option.correct input[type="radio"]:checked + .choice-label::after {
+        content: '✓';
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--success);
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .choice-option.incorrect input[type="radio"]:checked + .choice-label {
+        border-color: var(--error);
+        background: var(--light-error);
+    }
+
+    .choice-option.incorrect input[type="radio"]:checked + .choice-label::before {
+        border-color: var(--error);
+        background: var(--error);
+    }
+
+    .choice-option.incorrect input[type="radio"]:checked + .choice-label::after {
+        content: '✕';
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--error);
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .choice-option.highlight-correct input[type="radio"]:not(:checked) + .choice-label {
+        border-color: var(--success);
+        background: var(--light-success);
+    }
+
+    .choice-option.highlight-correct input[type="radio"]:not(:checked) + .choice-label::after {
+        content: '✓';
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--success);
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+        flex: 1;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+        background: #1d4ed8;
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-primary:disabled {
+        background: #bfdbfe;
+        cursor: not-allowed;
+    }
+
+    .btn-secondary {
+        background: #f3f4f6;
+        color: #1f2937;
+        border: 1px solid #d1d5db;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+        background: #e5e7eb;
+    }
+
+    .btn-secondary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .feedback-section {
+        margin-top: 30px;
+        padding: 20px;
+        background: var(--light-primary);
+        border-left: 4px solid var(--primary);
+        border-radius: 8px;
+        animation: slideIn 0.3s ease;
+    }
+
+    .feedback-section.success {
+        background: var(--light-success);
+        border-left-color: var(--success);
+    }
+
+    .feedback-section.error {
+        background: var(--light-error);
+        border-left-color: var(--error);
+    }
+
+    .feedback-title {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .feedback-section.success .feedback-title {
+        color: var(--success);
+    }
+
+    .feedback-section.error .feedback-title {
+        color: var(--error);
+    }
+
+    .feedback-content {
+        color: #374151;
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+
+    .feedback-content p {
+        margin: 0;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .back-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+
+    .summary-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        border: 2px solid #e5e7eb;
+    }
+
+    .summary-card h2 {
+        margin-top: 0;
+        color: #1f2937;
+    }
+
+    .summary-score {
+        font-size: 3rem;
+        font-weight: bold;
+        color: var(--primary);
+        margin: 20px 0;
+    }
+
+    .summary-message {
+        font-size: 1.1rem;
+        color: #6b7280;
+        margin-bottom: 20px;
+    }
+
+    .error-message {
+        padding: 20px;
+        background: var(--light-error);
+        border-left: 4px solid var(--error);
+        border-radius: 8px;
+        color: var(--error);
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 640px) {
+        .practice-container {
+            padding: 12px;
+        }
+
+        .question-card {
+            padding: 24px;
+        }
+
+        .practice-header {
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="practice-container">
+    <a href="{% url 'courses:course_detail' course.slug %}" class="back-link">← Back to course</a>
+
+    {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        <a href="{% url 'courses:course_detail' course.slug %}"><button type="button" class="btn btn-primary">Back to Course</button></a>
+    {% else %}
+        <div class="practice-header">
+            <h1 class="practice-title">{{ course.title|exam_marks }}</h1>
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                {% if not answered %}
+                    <div class="timer" id="timer" aria-live="polite" aria-label="Time remaining">⏱ 1:30</div>
+                {% endif %}
+                <div class="progress-bar">
+                    <span class="progress-text">{{ question_number }}/{{ total_questions }}</span>
+                    <div class="progress-fill">
+                        <div class="progress-fill-inner" style="width: {{ progress_percent }}%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if current_question %}
+            <div class="question-card">
+                <div class="question-number">Question {{ question_number }} of {{ total_questions }}</div>
+                <div class="question-text">{{ current_question.text|richtext }}</div>
+
+                <div class="timeout-banner" id="timeout-banner">⏰ Time's up! Moving to next question…</div>
+
+                <form method="post" id="answer-form">
+                    {% csrf_token %}
+                    <div class="choices-container">
+                        {% for choice in choices %}
+                            <div class="choice-option {% if answered %}{% if choice.is_correct %}highlight-correct{% elif attempt.selected_choice_id == choice.pk %}incorrect{% endif %}{% endif %}">
+                                <input
+                                    type="radio"
+                                    name="choice"
+                                    value="{{ choice.pk }}"
+                                    id="choice-{{ choice.pk }}"
+                                    {% if answered %}disabled{% endif %}
+                                    {% if attempt.selected_choice_id == choice.pk %}checked{% endif %}>
+                                <label for="choice-{{ choice.pk }}" class="choice-label">
+                                    {{ choice.text|exam_marks }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="action-buttons">
+                        {% if not answered %}
+                            <button type="submit" class="btn btn-primary" id="submit-btn">
+                                Submit Answer
+                            </button>
+                        {% else %}
+                            {% if has_next %}
+                                <button type="button" class="btn btn-primary" onclick="goToNextQuestion()">
+                                    Next Question →
+                                </button>
+                            {% elif all_completed %}
+                                <a href="{% url 'practice:practice_results' course.slug %}" class="btn btn-primary">
+                                    See Results →
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </form>
+
+                {% if answered %}
+                    <div class="feedback-section {% if is_correct %}success{% else %}error{% endif %}">
+                        <div class="feedback-title">
+                            {% if is_correct %}
+                                ✓ Correct!
+                            {% else %}
+                                ✕ Incorrect
+                            {% endif %}
+                        </div>
+                        {% if attempt.ai_feedback %}
+                            <div class="feedback-content">
+                                {{ attempt.ai_feedback|richtext }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<script>
+    // Prevent form submission if no choice selected
+    document.getElementById('answer-form')?.addEventListener('submit', function(e) {
+        const choice = document.querySelector('input[name="choice"]:checked');
+        if (!choice) {
+            e.preventDefault();
+            alert('Please select an answer before submitting.');
+        }
+    });
+
+    function goToNextQuestion() {
+        window.location.href = '?q={{ current_index|add:"1" }}';
+    }
+
+    // ── Countdown timer ──────────────────────────────────────────────
+    (function () {
+        const SECONDS = 90;
+        const timerEl = document.getElementById('timer');
+        const banner  = document.getElementById('timeout-banner');
+        const form    = document.getElementById('answer-form');
+
+        // No timer when question is already answered
+        if (!timerEl || !form) return;
+
+        let remaining = SECONDS;
+        let stopped   = false;
+
+        function fmt(s) {
+            const m = Math.floor(s / 60);
+            const sec = String(s % 60).padStart(2, '0');
+            return `⏱ ${m}:${sec}`;
+        }
+
+        function update() {
+            timerEl.textContent = fmt(remaining);
+            timerEl.classList.remove('warning', 'danger');
+            if (remaining <= 10) {
+                timerEl.classList.add('danger');
+            } else if (remaining <= 30) {
+                timerEl.classList.add('warning');
+            }
+        }
+
+        function stop() {
+            stopped = true;
+            timerEl.classList.add('stopped');
+            timerEl.classList.remove('warning', 'danger');
+        }
+
+        // Stop timer as soon as the form is submitted
+        form.addEventListener('submit', stop);
+
+        update();
+
+        const interval = setInterval(function () {
+            if (stopped) { clearInterval(interval); return; }
+            remaining--;
+            update();
+
+            if (remaining <= 0) {
+                clearInterval(interval);
+                stop();
+                const hasChoice = document.querySelector('input[name="choice"]:checked');
+                if (hasChoice) {
+                    // Answer already selected — submit it
+                    form.submit();
+                } else {
+                    // No answer — show banner and auto-advance after 2 s
+                    banner.style.display = 'block';
+                    setTimeout(function () {
+                        {% if has_next %}
+                            window.location.href = '?q={{ current_index|add:"1" }}';
+                        {% else %}
+                            window.location.href = '{% url "courses:course_detail" course.slug %}';
+                        {% endif %}
+                    }, 2000);
+                }
+            }
+        }, 1000);
+    })();
+</script>
+{% endblock %}

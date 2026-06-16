@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<h1>Login</h1>
+<div class="card intro">
+    <p style="margin:.2rem 0">Learners under 13 should use this site only with parent, guardian, or school consent. Learners under 18 should use it with permission from a responsible adult. See <a href="{% url 'courses:parents_minors' %}">Parents &amp; Minors</a>.</p>
+</div>
+{% if form.errors %}<p style="color:#dc2626">Incorrect username or password.</p>{% endif %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Sign In</button>
+</form>
+<p style="margin-top:1rem">Don&rsquo;t have an account? <a href="{% url 'signup' %}">Create a free account</a></p>
+{% endblock %}

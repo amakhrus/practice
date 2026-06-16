@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% load richtext %}
+
+{% block title %}Results – {{ course.title|exam_marks }}{% endblock %}
+
+{% block extra_head %}
+<style>
+    :root {
+        --success: #059669;
+        --error:   #dc2626;
+        --primary: #2563eb;
+    }
+
+    .results-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .back-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    /* Score card */
+    .score-card {
+        background: white;
+        border-radius: 16px;
+        border: 2px solid #e5e7eb;
+        padding: 40px;
+        text-align: center;
+        margin-bottom: 32px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .score-card h1 {
+        margin: 0 0 8px;
+        font-size: 1.4rem;
+        color: #1f2937;
+    }
+    .score-circle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: white;
+        margin: 20px 0 12px;
+    }
+    .score-circle.great  { background: var(--success); }
+    .score-circle.good   { background: #f59e0b; }
+    .score-circle.needs  { background: var(--error); }
+
+    .score-label {
+        font-size: 1.1rem;
+        color: #374151;
+        margin-bottom: 4px;
+    }
+    .score-sub {
+        font-size: 0.9rem;
+        color: #6b7280;
+    }
+
+    .result-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 24px;
+        flex-wrap: wrap;
+    }
+    .btn {
+        padding: 11px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: filter .15s;
+    }
+    .btn:hover { filter: brightness(.92); }
+    .btn-primary  { background: var(--primary); color: white; }
+    .btn-outline  { background: white; color: #374151; border: 1.5px solid #d1d5db; }
+
+    /* Per-question breakdown */
+    .breakdown-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 14px;
+    }
+
+    .q-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin-bottom: 10px;
+    }
+    .q-badge {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1rem;
+        color: white;
+    }
+    .q-badge.correct { background: var(--success); }
+    .q-badge.incorrect { background: var(--error); }
+
+    .q-body { flex: 1; min-width: 0; }
+    .q-number { font-size: .78rem; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+    .q-text { font-size: .95rem; color: #1f2937; margin: 4px 0 6px; line-height: 1.5; }
+    .q-answer { font-size: .88rem; }
+    .q-answer .label { color: #6b7280; }
+    .q-answer .correct-val { color: var(--success); font-weight: 600; }
+    .q-answer .wrong-val   { color: var(--error);   font-weight: 600; text-decoration: line-through; }
+
+    @media (max-width: 600px) {
+        .score-card { padding: 28px 20px; }
+        .results-container { padding: 12px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <a href="{% url 'courses:course_detail' course.slug %}" class="back-link">← Back to course</a>
+
+    <div class="score-card">
+        <h1>{{ course.title|exam_marks }}</h1>
+        <p style="color:#6b7280;margin:0 0 4px;">Practice Complete</p>
+
+        {% if score_percent >= 80 %}
+            <div class="score-circle great">{{ score_percent }}%</div>
+            <div class="score-label">Excellent work!</div>
+        {% elif score_percent >= 60 %}
+            <div class="score-circle good">{{ score_percent }}%</div>
+            <div class="score-label">Good effort — keep reviewing!</div>
+        {% else %}
+            <div class="score-circle needs">{{ score_percent }}%</div>
+            <div class="score-label">Keep practicing — you'll get there!</div>
+        {% endif %}
+
+        <div class="score-sub">{{ correct }} correct out of {{ total }} questions</div>
+
+        <div class="result-actions">
+            <a href="{% url 'practice:practice_interactive' course.slug %}?q=0" class="btn btn-primary">
+                ↺ Retake Practice
+            </a>
+            <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-outline">
+                Back to Course
+            </a>
+        </div>
+    </div>
+
+    <div class="breakdown-title">Question-by-Question Breakdown</div>
+
+    {% for item in question_results %}
+        {% with attempt=item.attempt question=item.question %}
+        <div class="q-row">
+            <div class="q-badge {% if attempt.is_correct %}correct{% else %}incorrect{% endif %}">
+                {% if attempt.is_correct %}✓{% else %}✕{% endif %}
+            </div>
+            <div class="q-body">
+                <div class="q-number">Question {{ forloop.counter }}</div>
+                <div class="q-text">{{ question.text|richtext }}</div>
+                <div class="q-answer">
+                    {% if attempt.is_correct %}
+                        <span class="label">Your answer: </span>
+                        <span class="correct-val">{{ attempt.selected_choice.text|exam_marks }}</span>
+                    {% else %}
+                        <span class="label">Your answer: </span>
+                        <span class="wrong-val">{{ attempt.selected_choice.text|exam_marks }}</span>
+                        &nbsp;
+                        <span class="label">Correct: </span>
+                        <span class="correct-val">
+                            {% for c in question.choices.all %}{% if c.is_correct %}{{ c.text|exam_marks }}{% endif %}{% endfor %}
+                        </span>
+                    {% endif %}
+                </div>
+                {% if attempt.ai_feedback %}
+                    <div style="margin-top:6px;font-size:.88rem;color:#374151;">{{ attempt.ai_feedback|richtext }}</div>
+                {% endif %}
+            </div>
+        </div>
+        {% endwith %}
+    {% endfor %}
+</div>
+{% endblock %}

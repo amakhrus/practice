@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy{% endblock %}
+{% block content %}
+<h1>Privacy Policy</h1>
+<p><strong>Last updated:</strong> June 7, 2026</p>
+
+<div class="card intro">
+    <p>This Privacy Policy explains how Independent Test Prep LMS collects, uses, protects, and retains information when learners, parents, guardians, tutors, or administrators use this site.</p>
+    <p><strong>Before public launch:</strong> replace this note with the site owner's legal name, business address if required, and a dedicated privacy contact email.</p>
+</div>
+
+<h2>Information We Collect</h2>
+<p>We collect only the information needed to operate the learning platform and help learners study.</p>
+<ul>
+    <li><strong>Account information:</strong> username, password credentials stored securely by Django, and any email address or profile details added later.</li>
+    <li><strong>Learning activity:</strong> course enrollments, practice attempts, selected multiple-choice answers, correctness, scores, timestamps, and feedback shown after practice.</li>
+    <li><strong>Technical information:</strong> basic server logs, browser/device information, IP address, session cookies, and security cookies needed to keep users logged in and protect forms.</li>
+    <li><strong>Admin content:</strong> course, lesson, question, and answer content created or edited by authorized site administrators.</li>
+</ul>
+
+<h2>How We Use Information</h2>
+<ul>
+    <li>Provide lessons, practice questions, answer checking, and progress records.</li>
+    <li>Maintain user accounts, login sessions, security, and fraud prevention.</li>
+    <li>Improve course quality, question explanations, and learning experience.</li>
+    <li>Respond to support, parent, guardian, tutor, or administrator requests.</li>
+    <li>Comply with applicable legal, safety, and operational obligations.</li>
+</ul>
+
+<h2>Multiple-Choice Practice and AI</h2>
+<p>In the current phase, practice is multiple-choice only and grading is handled locally by the site. We do not send student answers to an external AI API for essay grading or automated written-response scoring.</p>
+<p>If AI features are added later, this policy must be updated before launch of those features to explain what information is sent, which provider receives it, how it is used, and what choices parents, guardians, and learners have.</p>
+
+<h2>Children and Students</h2>
+<p>This site is intended for GED&reg; and SAT&reg; preparation learners, including students who may use it with a parent, guardian, tutor, school, or adult education program. If a learner is under 13, the site should only be used with appropriate parent, guardian, or school consent.</p>
+<p>We do not knowingly ask children under 13 to provide more personal information than is needed for learning access. Parents or guardians may request access to, correction of, or deletion of a child's account information and learning records by contacting the site owner.</p>
+<p>For more detail about minor learner use, see <a href="{% url 'courses:parents_minors' %}">Parents and Minors</a>.</p>
+
+<h2>Cookies</h2>
+<p>We use essential cookies for login sessions, security, and form protection. We do not currently use advertising cookies or behavioral advertising trackers.</p>
+
+<h2>Sharing Information</h2>
+<p>We do not sell learner personal information. We may share limited information only when necessary to operate the site, such as with hosting, database, email, analytics, security, or technical service providers added for production use. We may also share information when required by law or to protect the rights, safety, and security of users or the site.</p>
+<p>This site is independent and is not affiliated with, endorsed by, or sponsored by GED Testing Service LLC, the American Council on Education, or College Board. We do not share learner records with those organizations unless a user or legal requirement directs us to do so.</p>
+
+<h2>Data Retention</h2>
+<p>We keep account and learning records only as long as needed to provide the service, maintain progress history, comply with legal obligations, resolve disputes, and improve course quality. When information is no longer needed, it should be deleted or de-identified using reasonable measures.</p>
+
+<h2>Security</h2>
+<p>We use reasonable technical and organizational safeguards to protect information. Before public launch, the site should be deployed with production security settings, HTTPS, secure cookies, database backups, limited admin access, and a private production secret key.</p>
+
+<h2>User Choices</h2>
+<p>Users, parents, or guardians may request access, correction, export, or deletion of account information and learning records. Some information may need to be retained for legal, security, or operational reasons.</p>
+
+<h2>Third-Party Links and Videos</h2>
+<p>Lessons may link to or embed third-party resources such as educational videos. Those third-party services have their own privacy practices. Users should review those policies before using third-party resources.</p>
+
+<h2>Changes to This Policy</h2>
+<p>We may update this Privacy Policy as the site grows, especially before adding payments, analytics, email marketing, AI features, mobile apps, or school/parent dashboards. The updated policy will show a new "Last updated" date.</p>
+
+<h2>Contact</h2>
+<p>Before public launch, add a dedicated privacy contact email here. Until then, contact the site administrator who provided your account access.</p>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load richtext %}
+{% block title %}Practice - {{ course.title|exam_marks }}{% endblock %}
+{% block content %}
+<a href="{% url 'courses:course_detail' course.slug %}">&larr; Back to course</a>
+<h1>Practice: {{ course.title|exam_marks }}</h1>
+
+{% if submitted %}
+    <div class="card" style="background:#f0f9ff; border-left:4px solid #2563eb;">
+        <h3 style="margin-top:0">Your Results</h3>
+        {% if mcq_total %}
+            <p style="font-size:1.1rem"><strong>{{ correct }} / {{ mcq_total }}</strong> multiple-choice questions correct.</p>
+        {% endif %}
+        <a href="{% url 'practice:practice_set' course.slug %}"><button type="button">Try again</button></a>
+    </div>
+{% else %}
+    <p>Answer the questions below, then submit them all at once.</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {% for q in questions %}
+        <div class="card">
+            <div class="question-text"><strong>Q{{ forloop.counter }}.</strong> {{ q.text|richtext }}</div>
+
+            {% for choice in q.choices.all %}
+                <label style="display:block; margin:.3rem 0">
+                    <input type="radio" name="q{{ q.id }}" value="{{ choice.pk }}"
+                        {% if submitted %}disabled{% endif %}
+                        {% if q.result and q.result.selected_choice_id == choice.pk %}checked{% endif %}>
+                    {{ choice.text|exam_marks }}
+                    {% if submitted %}
+                        {% if choice.is_correct %}
+                            <span style="color:green; font-weight:600">&#10003; correct</span>
+                        {% elif q.result and q.result.selected_choice_id == choice.pk %}
+                            <span style="color:#dc2626; font-weight:600">&#10007; your answer</span>
+                        {% endif %}
+                    {% endif %}
+                </label>
+            {% endfor %}
+
+            {% if submitted %}
+                {% if q.result %}
+                    <div class="feedback">{{ q.result.ai_feedback|exam_marks }}</div>
+                {% else %}
+                    <p style="color:#b45309"><em>Not answered.</em> The correct option is marked above.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No practice questions yet.</p>
+    {% endfor %}
+
+    {% if questions and not submitted %}
+        <button type="submit">Submit All Answers</button>
+    {% endif %}
+</form>
+{% endblock %}

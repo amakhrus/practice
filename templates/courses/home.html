@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% load richtext %}
+{% block title %}Free GED&reg; & SAT&reg; Test Prep — Lessons & Practice for Every Subject{% endblock %}
+{% block meta_description %}Free, independent GED&reg; and SAT&reg; preparation: guided lessons, worked examples, diagrams, and thousands of multiple-choice and written-response practice questions in math, science, social studies, reading, and writing.{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* ---- Home landing page (original, dependency-free styling) ---- */
+    .hp-hero {
+        background: linear-gradient(135deg, #e9eefb 0%, #f1f0ea 55%, #f8f7f3 100%);
+        border: 1px solid #dfe3ee; border-radius: 18px;
+        padding: 2.4rem 1.5rem; text-align: center; margin: .25rem 0 1.25rem;
+    }
+    .hp-eyebrow {
+        display: inline-block; background: #dbeafe; color: #1e40af;
+        font-size: .76rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+        padding: .32rem .75rem; border-radius: 999px; margin-bottom: .9rem;
+    }
+    .hp-title { font-size: 2.15rem; line-height: 1.12; letter-spacing: -.015em;
+        font-weight: 800; color: #0f172a; margin: .1rem 0 .6rem; }
+    .hp-title .accent { color: #2563eb; }
+    .hp-sub { font-size: 1.07rem; color: #475569; max-width: 38rem; margin: 0 auto 1.3rem; }
+    .hp-cta { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+    .hp-btn { display: inline-block; padding: .72rem 1.35rem; border-radius: 11px;
+        font-weight: 700; font-size: 1rem; transition: transform .12s ease, background .12s ease; }
+    .hp-btn:hover { transform: translateY(-1px); }
+    .hp-btn-primary { background: #2563eb; color: #fff; box-shadow: 0 8px 18px rgba(37,99,235,.28); }
+    .hp-btn-primary:hover { background: #1d4ed8; }
+    .hp-btn-ghost { background: #fbfaf7; color: #2563eb; border: 1.5px solid #c7d2fe; }
+    .hp-btn-ghost:hover { background: #eef4ff; }
+    .hp-reassure { margin: 1.05rem 0 0; color: #64748b; font-size: .88rem; }
+    .hp-reassure b { color: #16a34a; }
+
+    .hp-stats { display: flex; flex-wrap: wrap; gap: .6rem; margin: 0 0 .5rem; }
+    .hp-stats > div { flex: 1 1 120px; background: #f8f7f3; border: 1px solid #e2e0d7;
+        border-radius: 13px; padding: .95rem .5rem; text-align: center; }
+    .hp-stat-num { display: block; font-size: 1.65rem; font-weight: 800; color: #2563eb; line-height: 1; }
+    .hp-stat-label { display: block; font-size: .8rem; color: #64748b; margin-top: .35rem; }
+
+    .hp-h2 { font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 2.1rem 0 .3rem; }
+    .hp-lead { color: #64748b; margin: 0 0 1rem; }
+
+    .hp-steps { display: grid; gap: .7rem; }
+    .hp-step { display: flex; gap: .95rem; align-items: flex-start;
+        background: #f8f7f3; border: 1px solid #e2e0d7; border-radius: 13px; padding: 1.05rem 1.1rem; }
+    .hp-step-num { flex: 0 0 auto; width: 2.1rem; height: 2.1rem; border-radius: 999px;
+        background: #2563eb; color: #fff; font-weight: 800; display: flex;
+        align-items: center; justify-content: center; }
+    .hp-step h3 { margin: .15rem 0 .25rem; font-size: 1.06rem; color: #0f172a; }
+    .hp-step p { margin: 0; color: #475569; font-size: .95rem; }
+
+    .hp-prog-head { font-size: 1.45rem; font-weight: 800; color: #0f172a; margin: 1.9rem 0 .25rem; }
+    .hp-subject-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+        gap: .45rem .8rem; margin: 1.1rem 0 .45rem; }
+    .hp-subj-head { font-size: .82rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+        color: #64748b; margin: 0; }
+    .hp-subj-note { color: #64748b; font-size: .84rem; }
+    .hp-topic-tabs { display: flex; flex-wrap: wrap; gap: .45rem; margin: .3rem 0 .8rem; }
+    .hp-topic-tabs a { display: inline-flex; align-items: center; gap: .35rem; padding: .36rem .7rem;
+        border-radius: 999px; border: 1px solid #d6d9ce; background: #fbfaf7; color: #1e3a8a;
+        font-size: .86rem; font-weight: 700; }
+    .hp-topic-tabs a:hover { background: #eef4ff; border-color: #c7d2fe; }
+    .hp-topic-tabs span { display: inline-flex; min-width: 1.35rem; height: 1.35rem; align-items: center;
+        justify-content: center; border-radius: 999px; background: #e0f2fe; color: #075985;
+        font-size: .72rem; }
+    .hp-topic-group { scroll-margin-top: 1rem; margin: 1rem 0 1.25rem; }
+    .hp-topic-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between;
+        gap: .45rem .8rem; padding: .75rem 0 .55rem; border-top: 1px solid #dcdacf; }
+    .hp-topic-head h4 { margin: 0 0 .18rem; color: #0f172a; font-size: 1.08rem; }
+    .hp-topic-head p { margin: 0; color: #64748b; font-size: .9rem; }
+    .hp-topic-count { white-space: nowrap; color: #166534; background: #dcfce7; border-radius: 999px;
+        padding: .16rem .55rem; font-size: .76rem; font-weight: 700; }
+    .hp-course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .65rem; }
+
+    a.hp-course { display: block; background: #f8f7f3; border: 1px solid #e2e0d7; border-radius: 13px;
+        padding: 1.05rem 1.15rem; margin: 0; color: inherit;
+        min-height: 100%;
+        transition: transform .13s ease, box-shadow .13s ease, border-color .13s ease; }
+    a.hp-course:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(2,6,23,.09);
+        border-color: #c7d2fe; }
+    .hp-course h4 { margin: .05rem 0 .3rem; font-size: 1.08rem; color: #1e3a8a; }
+    .hp-course p { margin: 0 0 .6rem; color: #475569; font-size: .94rem; }
+    .hp-meta { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .hp-chip { background: #f1f5f9; color: #475569; border-radius: 999px;
+        padding: .18rem .6rem; font-size: .78rem; font-weight: 600; }
+    .hp-chip.go { color: #2563eb; }
+
+    @media (max-width: 540px) {
+        .hp-title { font-size: 1.7rem; }
+        .hp-hero { padding: 1.8rem 1.1rem; }
+        .hp-course-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hp-hero">
+    <span class="hp-eyebrow">Free GED&reg; &amp; SAT&reg; Test Prep</span>
+    <h1 class="hp-title">Your clear, guided path to <span class="accent">passing the test.</span></h1>
+    <p class="hp-sub">Step-by-step lessons, worked examples, and thousands of practice questions across
+    every subject — designed to take you from &ldquo;where do I even start?&rdquo; to test-day ready.</p>
+    <div class="hp-cta">
+        <a class="hp-btn hp-btn-primary" href="{% url 'practice:diagnostic_home' %}">Find where to start &rarr;</a>
+        <a class="hp-btn hp-btn-ghost" href="#courses">Browse all courses</a>
+    </div>
+    <p class="hp-reassure"><b>100% free</b> &middot; No account needed to begin &middot; No ads, no catch</p>
+</section>
+
+<section class="hp-stats" aria-label="What's inside">
+    <div><span class="hp-stat-num">{{ stats.courses }}</span><span class="hp-stat-label">Courses</span></div>
+    <div><span class="hp-stat-num">{{ stats.questions }}</span><span class="hp-stat-label">Practice questions</span></div>
+    <div><span class="hp-stat-num">{{ stats.lessons }}</span><span class="hp-stat-label">Lessons</span></div>
+    <div><span class="hp-stat-num">{{ stats.subjects }}</span><span class="hp-stat-label">Core subjects</span></div>
+</section>
+
+<h2 class="hp-h2">How it works</h2>
+<p class="hp-lead">Three simple steps — no guesswork about what to study next.</p>
+<div class="hp-steps">
+    <div class="hp-step">
+        <div class="hp-step-num">1</div>
+        <div>
+            <h3>Take the free diagnostic</h3>
+            <p>A short quiz pinpoints your strengths and the exact topics to review — then recommends the right courses for you.</p>
+        </div>
+    </div>
+    <div class="hp-step">
+        <div class="hp-step-num">2</div>
+        <div>
+            <h3>Learn with clear lessons</h3>
+            <p>Plain-language explanations, real-world examples, and labeled diagrams build genuine understanding, not just memorization.</p>
+        </div>
+    </div>
+    <div class="hp-step">
+        <div class="hp-step-num">3</div>
+        <div>
+            <h3>Practice &amp; track progress</h3>
+            <p>Answer multiple-choice and written-response questions with full explanations, and watch your accuracy climb on your progress dashboard.</p>
+        </div>
+    </div>
+</div>
+
+<h2 class="hp-h2" id="courses">Explore the courses</h2>
+<p class="hp-lead">Browse everything below, or filter by the test you're preparing for.</p>
+<nav class="subject-tabs">
+    <a href="{% url 'courses:home' %}#courses" class="{% if not active %}active{% endif %}">All</a>
+    {% for val, label in programs %}
+        <a href="?program={{ val }}#courses" class="{% if active == val %}active{% endif %}">{{ label|exam_marks }}</a>
+    {% endfor %}
+</nav>
+
+{% for sec in sections %}
+    <h3 class="hp-prog-head">{{ sec.label|exam_marks }}</h3>
+    {% for subject in sec.subjects %}
+        <section class="hp-subject-block">
+            <div class="hp-subject-row">
+                <p class="hp-subj-head">{{ subject.label }}</p>
+                <span class="hp-subj-note">{{ subject.course_count }} course{{ subject.course_count|pluralize }}</span>
+            </div>
+
+            {% if subject.topic_groups %}
+                <nav class="hp-topic-tabs" aria-label="{{ sec.label }} {{ subject.label }} topics">
+                    {% for group in subject.topic_groups %}
+                        <a href="#{{ sec.value|lower }}-{{ subject.value }}-{{ group.value }}">
+                            {{ group.label }} <span>{{ group.courses|length }}</span>
+                        </a>
+                    {% endfor %}
+                </nav>
+
+                {% for group in subject.topic_groups %}
+                    <section class="hp-topic-group" id="{{ sec.value|lower }}-{{ subject.value }}-{{ group.value }}">
+                        <div class="hp-topic-head">
+                            <div>
+                                <h4>{{ group.label }}</h4>
+                                <p>{{ group.description }}</p>
+                            </div>
+                            <span class="hp-topic-count">{{ group.courses|length }} course{{ group.courses|length|pluralize }}</span>
+                        </div>
+                        <div class="hp-course-grid">
+                            {% for course in group.courses %}
+                                <a class="hp-course" href="{% url 'courses:course_detail' course.slug %}">
+                                    <h4>{{ course.title|exam_marks }}</h4>
+                                    <p>{{ course.description|exam_marks|truncatewords:28 }}</p>
+                                    <span class="hp-meta">
+                                        {% if course.num_lessons %}<span class="hp-chip">{{ course.num_lessons }} lesson{{ course.num_lessons|pluralize }}</span>{% endif %}
+                                        {% if course.num_questions %}<span class="hp-chip">{{ course.num_questions }} question{{ course.num_questions|pluralize }}</span>{% endif %}
+                                        <span class="hp-chip go">Open course &rarr;</span>
+                                    </span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endfor %}
+            {% else %}
+                <div class="hp-course-grid">
+                    {% for course in subject.courses %}
+                        <a class="hp-course" href="{% url 'courses:course_detail' course.slug %}">
+                            <h4>{{ course.title|exam_marks }}</h4>
+                            <p>{{ course.description|exam_marks|truncatewords:28 }}</p>
+                            <span class="hp-meta">
+                                {% if course.num_lessons %}<span class="hp-chip">{{ course.num_lessons }} lesson{{ course.num_lessons|pluralize }}</span>{% endif %}
+                                {% if course.num_questions %}<span class="hp-chip">{{ course.num_questions }} question{{ course.num_questions|pluralize }}</span>{% endif %}
+                                <span class="hp-chip go">Open course &rarr;</span>
+                            </span>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+    {% empty %}
+        <p class="coming-soon">Courses coming soon.</p>
+    {% endfor %}
+{% endfor %}
+{% endblock %}

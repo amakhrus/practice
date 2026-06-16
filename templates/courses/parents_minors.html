@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Parents and Minors{% endblock %}
+{% block content %}
+<h1>Parents and Minors</h1>
+<p><strong>Last updated:</strong> June 7, 2026</p>
+
+<div class="card intro">
+    <p>This page explains how Independent Test Prep LMS should be used by learners under 18, and what parents, guardians, schools, tutors, and responsible adults should know before giving access to a minor.</p>
+    <p><strong>Before public launch:</strong> replace this note with the site owner's legal name, parent/privacy contact email, and any school or tutoring program contact process.</p>
+</div>
+
+<h2>Quick Parent Summary</h2>
+<ul>
+    <li>Learners under 13 should use this site only with parent, guardian, or school consent.</li>
+    <li>Learners ages 13 to 17 should use this site with permission from a parent, guardian, school, tutor, or responsible adult.</li>
+    <li>The current phase uses multiple-choice practice only, with local grading and stored explanations.</li>
+    <li>The current phase does not use external AI essay grading or automated written-response scoring.</li>
+    <li>Parents or guardians may request access to, correction of, or deletion of a child's account information and learning records.</li>
+</ul>
+
+<h2>Who This Site Is For</h2>
+<p>This site is designed for educational test-preparation and skill-building. Learners may use it independently, with a parent or guardian, with a tutor, or through an adult education or school program.</p>
+<p>The site is not designed to collect unnecessary personal information from children. It should be used in a supervised learning context when a learner is a minor.</p>
+
+<h2>Under 13 Learners</h2>
+<p>If a learner is under 13, the learner should not use this site unless a parent, guardian, school, or authorized educational program has reviewed the site and given appropriate consent.</p>
+<p>The account should be created, managed, or approved by a responsible adult. The learner should not enter personal contact information, home address, phone number, photos, videos, voice recordings, location information, or other sensitive personal details into the site unless the parent, guardian, or school has specifically authorized it.</p>
+
+<h2>Learners Ages 13 to 17</h2>
+<p>Learners ages 13 to 17 should use this site with permission from a parent, guardian, school, tutor, or responsible adult. A responsible adult should help the learner understand account safety, privacy, respectful use, and the limits of practice-score predictions.</p>
+
+<h2>Parent or Guardian Responsibilities</h2>
+<p>Parents and guardians should review the site, the <a href="{% url 'courses:privacy_policy' %}">Privacy Policy</a>, the <a href="{% url 'courses:terms_of_use' %}">Terms of Use</a>, and the learning content before allowing a minor to use the site.</p>
+<p>Parents and guardians should help minors keep login credentials private, avoid sharing personal information, use the site for lawful study only, and understand that practice results are educational feedback rather than official exam scores.</p>
+
+<h2>Information Collected About Minor Learners</h2>
+<p>The site may store account information, course enrollments, practice attempts, selected multiple-choice answers, correctness, scores, timestamps, and explanation feedback. These records are used to operate the learning experience and help track progress.</p>
+<p>The site should not ask minors to provide more information than is reasonably needed for learning access and progress tracking.</p>
+
+<h2>No Public Profiles or Social Features</h2>
+<p>The current site does not provide public student profiles, public discussion boards, student-to-student messaging, public posting, or social networking features. If those features are added later, this page, the Privacy Policy, and the Terms of Use should be updated before launch.</p>
+
+<h2>Parent and Guardian Requests</h2>
+<p>A parent or guardian may request to review, correct, export, or delete a child's account information and learning records. Some records may need to be retained for legal, security, backup, or operational reasons.</p>
+<p>Before public launch, add a dedicated parent/privacy contact email here. Until then, contact the site administrator who provided the account access.</p>
+
+<h2>School, Tutor, and Program Use</h2>
+<p>If a school, tutor, adult education program, or organization provides access to the site for a minor, that organization is responsible for confirming that it has appropriate authority or consent to create accounts, assign work, view progress, and manage learning records.</p>
+<p>Organizations should avoid entering unnecessary student personal information and should use the smallest amount of information needed to provide learning access.</p>
+
+<h2>AI and Future Features</h2>
+<p>The current phase does not send student answers to an external AI API for essay grading or automated written-response scoring. If AI features are added later, parents, guardians, and schools should be told what information may be sent, which provider receives it, how it is used, and what choices are available.</p>
+
+<h2>Third-Party Links and Videos</h2>
+<p>Lessons may link to or embed third-party educational resources. Parents, guardians, and schools should review those third-party resources because they may have their own privacy practices, cookies, advertisements, age rules, or terms.</p>
+
+<h2>Safety Guidelines for Learners</h2>
+<ul>
+    <li>Use the site only for study and learning.</li>
+    <li>Do not share your password with friends or classmates.</li>
+    <li>Do not enter your address, phone number, private photos, voice recordings, or location details.</li>
+    <li>Do not copy official test questions or paid materials into the site.</li>
+    <li>Ask a parent, guardian, tutor, or teacher for help if something seems confusing or unsafe.</li>
+</ul>
+
+<h2>Related Pages</h2>
+<p>Please also review the <a href="{% url 'courses:privacy_policy' %}">Privacy Policy</a>, <a href="{% url 'courses:terms_of_use' %}">Terms of Use</a>, and <a href="{% url 'courses:copyright_trademark_disclaimer' %}">Copyright and Trademark Disclaimer</a>.</p>
+{% endblock %}

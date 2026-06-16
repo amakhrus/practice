@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load richtext %}
+{% block title %}Practice Question{% endblock %}
+{% block content %}
+<a href="{% url 'courses:course_detail' question.course.slug %}">&larr; Back to course</a>
+<h1>Practice Question</h1>
+<div class="card">
+    <div class="question-text"><strong>{{ question.text|richtext }}</strong></div>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for choice in question.choices.all %}
+            <label style="display:block; margin:.3rem 0">
+                <input type="radio" name="choice" value="{{ choice.pk }}" required> {{ choice.text|exam_marks }}
+            </label>
+        {% endfor %}
+        <br><button type="submit">Submit Answer</button>
+    </form>
+</div>
+
+{% if attempt %}
+    <div class="card">
+        {% if attempt.is_correct %}
+            <h3 style="color:green">&#10003; Correct!</h3>
+        {% else %}
+            <h3 style="color:#dc2626">&#10007; Not quite</h3>
+        {% endif %}
+        <h4>Explanation</h4>
+        <div class="feedback">{{ attempt.ai_feedback|exam_marks }}</div>
+    </div>
+{% endif %}
+{% endblock %}

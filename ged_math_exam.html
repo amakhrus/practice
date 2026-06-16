@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GED Mathematical Reasoning: Full-Length Practice Exam</title>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+    options: { ignoreHtmlClass: 'no-mathjax', processHtmlClass: 'mathjax' }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root { --blue:#2563eb; --ink:#1a1a1a; --muted:#6b7280; --line:#e5e7eb;
+          --green:#16a34a; --red:#dc2626; --amber:#d97706; --bg:#f8fafc; }
+  * { box-sizing:border-box; }
+  body { font-family:system-ui,-apple-system,'Segoe UI',sans-serif; color:var(--ink);
+         margin:0; background:var(--bg); line-height:1.6; }
+  .wrap { max-width:820px; margin:0 auto; padding:0 18px 120px; }
+  header.exam { position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid var(--line);
+                box-shadow:0 1px 6px rgba(0,0,0,.05); }
+  .bar { max-width:820px; margin:0 auto; padding:10px 18px; display:flex; align-items:center;
+         gap:14px; flex-wrap:wrap; }
+  .bar h1 { font-size:1rem; margin:0; flex:1 1 220px; }
+  .timer { font-variant-numeric:tabular-nums; font-weight:700; font-size:1.25rem;
+           padding:4px 12px; border-radius:8px; background:#eff6ff; color:var(--blue); }
+  .timer.warn { background:#fef2f2; color:var(--red); }
+  .progress { font-size:.85rem; color:var(--muted); }
+  h2.sec { margin:32px 0 6px; font-size:1.15rem; }
+  .badge { display:inline-block; font-size:.72rem; font-weight:700; padding:2px 9px; border-radius:999px;
+           vertical-align:middle; margin-left:8px; }
+  .badge.no-calc { background:#fef2f2; color:var(--red); }
+  .badge.calc { background:#ecfdf5; color:var(--green); }
+  details.intro { background:#fff; border:1px solid var(--line); border-radius:12px; padding:6px 18px;
+                  margin:18px 0; }
+  details.intro > summary { cursor:pointer; font-weight:700; padding:10px 0; font-size:1.05rem; }
+  .lesson h3 { margin:18px 0 4px; }
+  .q { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+       margin:14px 0; }
+  .q-head { display:flex; gap:10px; align-items:baseline; }
+  .q-num { font-weight:700; color:var(--blue); flex:0 0 auto; }
+  .q-diff { margin-left:auto; font-size:.7rem; color:var(--muted); text-transform:uppercase;
+            letter-spacing:.04em; }
+  .q-body p:first-child { margin-top:0; }
+  .choices { list-style:none; margin:12px 0 0; padding:0; }
+  .choices li { margin:8px 0; }
+  .choices label { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--line);
+                   border-radius:9px; cursor:pointer; transition:background .12s,border-color .12s; }
+  .choices label:hover { background:#f9fafb; }
+  .choices input { margin-top:5px; }
+  .choices label.correct { border-color:var(--green); background:#f0fdf4; }
+  .choices label.wrong { border-color:var(--red); background:#fef2f2; }
+  .explanation { margin-top:12px; padding:12px 14px; border-left:4px solid var(--blue);
+                 background:#f8fafc; border-radius:0 8px 8px 0; display:none; }
+  .explanation.show { display:block; }
+  .explanation .tag { font-weight:700; color:var(--blue); display:block; margin-bottom:2px; }
+  figure.chart { margin:14px 0; text-align:center; }
+  figure.chart svg { max-width:100%; height:auto; }
+  figcaption { font-size:.85rem; color:var(--muted); margin-top:6px; }
+  table.data-table { border-collapse:collapse; margin:10px 0; }
+  table.data-table th, table.data-table td { border:1px solid var(--line); padding:6px 12px; }
+  .actions { position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid var(--line);
+             padding:12px 18px; display:flex; justify-content:center; gap:12px; z-index:60; }
+  button { font:inherit; font-weight:700; border:0; border-radius:9px; padding:11px 26px; cursor:pointer; }
+  .btn-primary { background:var(--blue); color:#fff; }
+  .btn-ghost { background:#fff; color:var(--ink); border:1px solid var(--line); }
+  .results { display:none; background:#fff; border:2px solid var(--blue); border-radius:14px;
+             padding:22px; margin:24px 0; text-align:center; }
+  .results.show { display:block; }
+  .results .score { font-size:2.6rem; font-weight:800; line-height:1; }
+  .results .scaled { font-size:1.1rem; margin-top:8px; }
+  .pill { display:inline-block; padding:4px 16px; border-radius:999px; font-weight:700; margin-top:10px; }
+  .pill.pass { background:#ecfdf5; color:var(--green); }
+  .pill.fail { background:#fef2f2; color:var(--red); }
+  .note { font-size:.82rem; color:var(--muted); margin-top:10px; }
+</style>
+</head>
+<body class="mathjax">
+<header class="exam">
+  <div class="bar">
+    <h1>GED Mathematical Reasoning: Full-Length Practice Exam</h1>
+    <span class="progress" id="progress">0 / 46 answered</span>
+    <span class="timer" id="timer">115:00</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <p style="color:var(--muted);margin:18px 0 0">A full-length, test-day-style GED Mathematical Reasoning practice exam: 46 questions modeled on the real blueprint, split into a no-calculator section (the first 5 questions) and a calculator section (the remaining 41), with a provided formula sheet. It covers the complete range of tested skills -- number sense and operations, ratios, proportions, and percents, geometry and measurement, data and statistics, and the full sweep of algebra (expressions, equations, inequalities, functions, and graphs) -- at an easy-to-hard difficulty spread. Every question includes a worked explanation and a pro tip. Use the lessons to learn the exam rules (115 minutes, scored 100-200, 145 to pass) and the formula sheet before you start, then take the 46 questions as one timed rehearsal.</p>
+
+  <details class="intro">
+    <summary>Before you begin &mdash; exam rules &amp; formula sheet</summary>
+    <div class="lesson"><h3>1. The Real GED Math Test: Format &amp; Rules</h3><p>This exam is built to feel like the <strong>real GED® Mathematical Reasoning test</strong>. Here is exactly what you are walking into:</p>
+<ul><li><strong>46 questions</strong> in <strong>115 minutes</strong> (1 hour and 55 minutes). That is just over <strong>2 minutes per question</strong> on average.</li><li>The test comes in <strong>two parts</strong>, and this practice exam follows the same order:</li><li><strong>Part 1 -- Questions 1-5: NO CALCULATOR.</strong> These are kept friendly on purpose: clean numbers, basic operations, and number sense you can do by hand.</li><li><strong>Part 2 -- Questions 6-46: CALCULATOR ALLOWED.</strong> On the real test you get an on-screen <strong>TI-30XS</strong> calculator (or your own approved one). Everything from percents to algebra to geometry lives here.</li><li>You may <strong>not</strong> go back to Part 1 once you start Part 2 on the real test, so finish the no-calculator questions before moving on.</li><li>A <strong>formula sheet</strong> is provided (see the next lesson) -- you do <strong>not</strong> have to memorize area and volume formulas.</li></ul>
+<p><strong>Scoring:</strong> each GED® test is scored from <strong>100 to 200</strong>, and you need <strong>145 to pass</strong>. There is <strong>no penalty for wrong answers</strong>, so never leave a question blank -- always guess.</p>
+<div class="self-check" data-answer="46"><strong>Quick Check</strong><p>How many questions are on the GED® Mathematical Reasoning test?</p><div class="self-check-row"><input type="text" aria-label="Quick check answer" placeholder="Type your answer"><button type="button" data-self-check-button>Check</button><button type="button" class="hint-btn" data-self-check-hint>Hint</button></div><p class="self-check-feedback" aria-live="polite"></p><p class="self-check-hint" hidden>It is 46 questions in 115 minutes.</p></div></div><div class="lesson"><h3>2. The Formula Sheet You Get</h3><p>On test day the GED® gives you a <strong>formula sheet</strong>. You do not need to memorize these -- but you do need to know <em>which</em> formula to grab. The most-used ones:</p>
+<p><strong>Area</strong></p>
+<ul><li>Rectangle: \(A = lw\)</li><li>Triangle: \(A = \tfrac{1}{2}bh\)</li><li>Circle: \(A = \pi r^2\)</li><li>Trapezoid: \(A = \tfrac{1}{2}(b_1 + b_2)h\)</li></ul>
+<p><strong>Perimeter / Circumference</strong></p>
+<ul><li>Rectangle: \(P = 2l + 2w\)</li><li>Circle: \(C = 2\pi r = \pi d\)</li></ul>
+<p><strong>Volume</strong></p>
+<ul><li>Box (rectangular prism): \(V = lwh\)</li><li>Cylinder: \(V = \pi r^2 h\)</li><li>Cone: \(V = \tfrac{1}{3}\pi r^2 h\)</li><li>Sphere: \(V = \tfrac{4}{3}\pi r^3\)</li></ul>
+<p><strong>Algebra &amp; Geometry</strong></p>
+<ul><li>Pythagorean theorem: \(a^2 + b^2 = c^2\)</li><li>Slope: \(m = \dfrac{y_2 - y_1}{x_2 - x_1}\)</li><li>Slope-intercept line: \(y = mx + b\)</li><li>Quadratic formula: \(x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}\)</li></ul>
+<p><strong>Percent &amp; rate ideas to keep in your head</strong></p>
+<ul><li>Percent change \(= \dfrac{\text{new} - \text{old}}{\text{old}}\)</li><li>Distance \(= \text{rate} \times \text{time}\)</li></ul>
+<figure class="chart">
+<svg viewBox="0 0 560 210" role="img" aria-label="Formula substitution workflow from identify variables to substitute, simplify, and attach units" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif">
+  <text x="280" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Formula Skill: Name, Substitute, Simplify</text>
+  <g font-size="10.5" text-anchor="middle" font-weight="700">
+    <rect x="28" y="58" width="114" height="62" rx="8" fill="#eff6ff" stroke="#93c5fd"/>
+    <text x="85" y="83" fill="#2563eb">1. Choose</text><text x="85" y="100" fill="#2563eb">the formula</text>
+    <rect x="162" y="58" width="114" height="62" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="219" y="83" fill="#1a1a1a">2. Label</text><text x="219" y="100" fill="#1a1a1a">given values</text>
+    <rect x="296" y="58" width="114" height="62" rx="8" fill="#fef3c7" stroke="#fbbf24"/>
+    <text x="353" y="83" fill="#92400e">3. Substitute</text><text x="353" y="100" fill="#92400e">with parentheses</text>
+    <rect x="430" y="58" width="104" height="62" rx="8" fill="#dcfce7" stroke="#86efac"/>
+    <text x="482" y="83" fill="#166534">4. Simplify</text><text x="482" y="100" fill="#166534">and units</text>
+  </g>
+  <g stroke="#9ca3af" stroke-width="1.6" fill="none">
+    <path d="M142,89 H160"/><path d="M276,89 H294"/><path d="M410,89 H428"/>
+  </g>
+  <g font-size="12" fill="#1a1a1a" text-anchor="middle">
+    <text x="280" y="155">A = lw, l = 8, w = 5</text>
+    <text x="280" y="178" font-weight="700">A = (8)(5) = 40 square units</text>
+  </g>
+</svg><figcaption>Reading a problem, picking the right formula, and substituting the numbers in.</figcaption></figure>
+<div class="self-check" data-answer="\pi r^2 h;;pi r^2 h;;pir^2h"><strong>Quick Check</strong><p>Which formula gives the volume of a cylinder? Write it using pi, r, and h.</p><div class="self-check-row"><input type="text" aria-label="Quick check answer" placeholder="Type your answer"><button type="button" data-self-check-button>Check</button><button type="button" class="hint-btn" data-self-check-hint>Hint</button></div><p class="self-check-feedback" aria-live="polite"></p><p class="self-check-hint" hidden>Volume of a cylinder is pi times r squared times the height.</p></div></div><div class="lesson"><h3>3. Pacing &amp; Strategy for Test Day</h3><p>You have the math skills -- this lesson is about <strong>using your time well</strong> across 46 questions.</p>
+<p><strong>Pacing.</strong> A little over <strong>2 minutes per question</strong>. If one stalls you, lock in your best guess, <strong>flag it</strong>, and move on. Coming back with a fresh eye is faster than grinding.</p>
+<p><strong>Backsolve.</strong> When the answer choices are numbers, <strong>plug them into the problem</strong> instead of doing all the algebra -- start with a middle value and adjust.</p>
+<p><strong>Estimate first.</strong> A quick estimate kills obviously-wrong choices and catches calculator typos (a decimal in the wrong place).</p>
+<p><strong>Mind the units.</strong> Length is plain units, area is <strong>square</strong> units, volume is <strong>cubic</strong> units. Re-read the last line of the question so you answer what&#x27;s actually asked (price vs. discount, area vs. perimeter).</p>
+<p><strong>Never leave a blank.</strong> No penalty for wrong answers -- eliminate what you can, then guess.</p>
+<p><strong>Part 1 first.</strong> Get the 5 no-calculator questions done before you touch Part 2; you can&#x27;t return to them.</p>
+<div class="self-check" data-answer="2"><strong>Quick Check</strong><p>About how many minutes do you have per question on the GED® Math test? Answer with a number.</p><div class="self-check-row"><input type="text" aria-label="Quick check answer" placeholder="Type your answer"><button type="button" data-self-check-button>Check</button><button type="button" class="hint-btn" data-self-check-hint>Hint</button></div><p class="self-check-feedback" aria-live="polite"></p><p class="self-check-hint" hidden>115 minutes for 46 questions is just over 2 minutes each.</p></div></div>
+  </details>
+
+  <div class="results" id="results"></div>
+
+  <h2 class="sec">Part 1 &mdash; Questions 1&ndash;5<span class="badge no-calc">No calculator</span></h2><div class="q" id="q0"><div class="q-head"><span class="q-num">Q1</span><span class="q-diff">Easy</span></div><div class="q-body"><p><strong>No-calculator section.</strong> Simplify using order of operations: \(3 + 4 \times 2^2\).</p></div><ul class="choices"><li><label><input type="radio" name="q0" value="0"><span><p>\(19\)</p></span></label></li><li><label><input type="radio" name="q0" value="1"><span><p>\(28\)</p></span></label></li><li><label><input type="radio" name="q0" value="2"><span><p>\(49\)</p></span></label></li><li><label><input type="radio" name="q0" value="3"><span><p>\(22\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Powers first: \(2^2 = 4\). Then multiply: \(4 \times 4 = 16\). Then add: \(3 + 16 = 19\). The trap 28 does \((3+4)\times 4\), adding before multiplying. Pro tip: remember PEMDAS -- exponents and multiplication come before addition.</p></div></div><div class="q" id="q1"><div class="q-head"><span class="q-num">Q2</span><span class="q-diff">Easy</span></div><div class="q-body"><p><strong>No-calculator section.</strong> What is \(\dfrac{3}{4} - \dfrac{1}{2}\)?</p></div><ul class="choices"><li><label><input type="radio" name="q1" value="0"><span><p>\(\frac{1}{4}\)</p></span></label></li><li><label><input type="radio" name="q1" value="1"><span><p>\(\frac{1}{2}\)</p></span></label></li><li><label><input type="radio" name="q1" value="2"><span><p>\(\frac{2}{2}\)</p></span></label></li><li><label><input type="radio" name="q1" value="3"><span><p>\(\frac{1}{8}\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Use a common denominator of 4: \(\frac{1}{2} = \frac{2}{4}\), so \(\frac{3}{4} - \frac{2}{4} = \frac{1}{4}\). The trap \(\frac{1}{8}\) subtracts tops and multiplies bottoms. Pro tip: you can only add or subtract fractions once the denominators match.</p></div></div><div class="q" id="q2"><div class="q-head"><span class="q-num">Q3</span><span class="q-diff">Medium</span></div><div class="q-body"><p><strong>No-calculator section.</strong> Evaluate: \(-5 + (-3) \times 2\).</p></div><ul class="choices"><li><label><input type="radio" name="q2" value="0"><span><p>\(-11\)</p></span></label></li><li><label><input type="radio" name="q2" value="1"><span><p>\(-16\)</p></span></label></li><li><label><input type="radio" name="q2" value="2"><span><p>\(4\)</p></span></label></li><li><label><input type="radio" name="q2" value="3"><span><p>\(-1\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Multiply first: \((-3)\times 2 = -6\). Then add: \(-5 + (-6) = -11\). The trap \(-16\) does \((-5 + -3)\times 2\), adding before multiplying. Pro tip: multiplication comes before addition, even with negatives.</p></div></div><div class="q" id="q3"><div class="q-head"><span class="q-num">Q4</span><span class="q-diff">Medium</span></div><div class="q-body"><p><strong>No-calculator section.</strong> Simplify: \(2^3 \times 2^2\).</p></div><ul class="choices"><li><label><input type="radio" name="q3" value="0"><span><p>\(32\)</p></span></label></li><li><label><input type="radio" name="q3" value="1"><span><p>\(64\)</p></span></label></li><li><label><input type="radio" name="q3" value="2"><span><p>\(16\)</p></span></label></li><li><label><input type="radio" name="q3" value="3"><span><p>\(12\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>When you multiply powers with the same base, add the exponents: \(2^{3+2} = 2^5 = 32\). You can also check: \(8 \times 4 = 32\). The trap 64 multiplies the exponents \((2^6)\). Pro tip: same base and multiplying -&gt; add the exponents.</p></div></div><div class="q" id="q4"><div class="q-head"><span class="q-num">Q5</span><span class="q-diff">Medium</span></div><div class="q-body"><p><strong>No-calculator section.</strong> Between which two whole numbers does \(\sqrt{50}\) fall?</p></div><ul class="choices"><li><label><input type="radio" name="q4" value="0"><span><p>Between 7 and 8</p></span></label></li><li><label><input type="radio" name="q4" value="1"><span><p>Between 6 and 7</p></span></label></li><li><label><input type="radio" name="q4" value="2"><span><p>Between 8 and 9</p></span></label></li><li><label><input type="radio" name="q4" value="3"><span><p>Between 24 and 26</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>\(7^2 = 49\) and \(8^2 = 64\). Since 50 is just above 49, \(\sqrt{50}\) is a little more than 7, so it sits between 7 and 8. The trap &#x27;between 24 and 26&#x27; halves 50. Pro tip: to estimate a square root, find the two perfect squares it lands between.</p></div></div><h2 class="sec">Part 2 &mdash; Questions 6&ndash;46<span class="badge calc">Calculator allowed</span></h2><div class="q" id="q5"><div class="q-head"><span class="q-num">Q6</span><span class="q-diff">Easy</span></div><div class="q-body"><p><strong>Calculator section.</strong> What is \(20\%\) of \(150\)?</p></div><ul class="choices"><li><label><input type="radio" name="q5" value="0"><span><p>\(30\)</p></span></label></li><li><label><input type="radio" name="q5" value="1"><span><p>\(3\)</p></span></label></li><li><label><input type="radio" name="q5" value="2"><span><p>\(300\)</p></span></label></li><li><label><input type="radio" name="q5" value="3"><span><p>\(7.5\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>\(20\% = 0.20\), and \(0.20 \times 150 = 30\). The trap 3 misplaces the decimal \((0.02 \times 150)\). Pro tip: &#x27;percent of&#x27; means multiply, after turning the percent into a decimal.</p></div></div><div class="q" id="q6"><div class="q-head"><span class="q-num">Q7</span><span class="q-diff">Medium</span></div><div class="q-body"><p>An \$80 pair of shoes is marked \(25\%\) off. What is the sale price?</p></div><ul class="choices"><li><label><input type="radio" name="q6" value="0"><span><p>\$60</p></span></label></li><li><label><input type="radio" name="q6" value="1"><span><p>\$20</p></span></label></li><li><label><input type="radio" name="q6" value="2"><span><p>\$55</p></span></label></li><li><label><input type="radio" name="q6" value="3"><span><p>\$100</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>The discount is \(0.25 \times 80 = \$20\), so the price is \(80 - 20 = \$60\). The trap \$20 gives only the discount, not the new price. Pro tip: 25% off means you pay 75%: \(0.75 \times 80 = 60\).</p></div></div><div class="q" id="q7"><div class="q-head"><span class="q-num">Q8</span><span class="q-diff">Medium</span></div><div class="q-body"><p>A price rises from \$40 to \$50. What is the percent increase?</p></div><ul class="choices"><li><label><input type="radio" name="q7" value="0"><span><p>\(25\%\)</p></span></label></li><li><label><input type="radio" name="q7" value="1"><span><p>\(20\%\)</p></span></label></li><li><label><input type="radio" name="q7" value="2"><span><p>\(10\%\)</p></span></label></li><li><label><input type="radio" name="q7" value="3"><span><p>\(125\%\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Percent change \(= \frac{\text{new}-\text{old}}{\text{old}} = \frac{50-40}{40} = \frac{10}{40} = 0.25 = 25\%\). The trap 20% divides by the new value (50). Pro tip: for percent change, always divide by the ORIGINAL amount.</p></div></div><div class="q" id="q8"><div class="q-head"><span class="q-num">Q9</span><span class="q-diff">Medium</span></div><div class="q-body"><p>\(12\) is what percent of \(48\)?</p></div><ul class="choices"><li><label><input type="radio" name="q8" value="0"><span><p>\(25\%\)</p></span></label></li><li><label><input type="radio" name="q8" value="1"><span><p>\(4\%\)</p></span></label></li><li><label><input type="radio" name="q8" value="2"><span><p>\(40\%\)</p></span></label></li><li><label><input type="radio" name="q8" value="3"><span><p>\(36\%\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>\(\frac{12}{48} = 0.25 = 25\%\). The trap 4% comes from \(48 \div 12\) read backwards. Pro tip: &#x27;what percent of&#x27; means part divided by whole, then times 100.</p></div></div><div class="q" id="q9"><div class="q-head"><span class="q-num">Q10</span><span class="q-diff">Medium</span></div><div class="q-body"><p>A \$50 item has an \(8\%\) sales tax added. What is the total cost?</p></div><ul class="choices"><li><label><input type="radio" name="q9" value="0"><span><p>\$54.00</p></span></label></li><li><label><input type="radio" name="q9" value="1"><span><p>\$58.00</p></span></label></li><li><label><input type="radio" name="q9" value="2"><span><p>\$50.08</p></span></label></li><li><label><input type="radio" name="q9" value="3"><span><p>\$4.00</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>The tax is \(0.08 \times 50 = \$4\), so the total is \(50 + 4 = \$54\). The trap \$4 is only the tax. Pro tip: adding 8% tax is the same as multiplying by 1.08: \(1.08 \times 50 = 54\).</p></div></div><div class="q" id="q10"><div class="q-head"><span class="q-num">Q11</span><span class="q-diff">Medium</span></div><div class="q-body"><p>Two numbers are in the ratio \(3:5\) and add up to \(40\). What is the smaller number?</p></div><ul class="choices"><li><label><input type="radio" name="q10" value="0"><span><p>\(15\)</p></span></label></li><li><label><input type="radio" name="q10" value="1"><span><p>\(24\)</p></span></label></li><li><label><input type="radio" name="q10" value="2"><span><p>\(8\)</p></span></label></li><li><label><input type="radio" name="q10" value="3"><span><p>\(5\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>The ratio has \(3 + 5 = 8\) parts, so each part is \(40 \div 8 = 5\). The smaller number is \(3 \times 5 = 15\). The trap 24 is the larger number \((5 \times 5 - 1)\)? No -- 24 is \(3\times 8\), mixing up the steps. Pro tip: add the ratio numbers to find the size of one part first.</p></div></div><div class="q" id="q11"><div class="q-head"><span class="q-num">Q12</span><span class="q-diff">Medium</span></div><div class="q-body"><p>Solve the proportion \(\dfrac{4}{10} = \dfrac{x}{25}\).</p></div><ul class="choices"><li><label><input type="radio" name="q11" value="0"><span><p>\(x = 10\)</p></span></label></li><li><label><input type="radio" name="q11" value="1"><span><p>\(x = 62.5\)</p></span></label></li><li><label><input type="radio" name="q11" value="2"><span><p>\(x = 16\)</p></span></label></li><li><label><input type="radio" name="q11" value="3"><span><p>\(x = 100\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Cross-multiply: \(10x = 4 \times 25 = 100\), so \(x = 10\). The trap 62.5 cross-multiplies the wrong pair. Pro tip: \(\frac{4}{10}\) is the same as \(0.4\), and \(0.4 \times 25 = 10\).</p></div></div><div class="q" id="q12"><div class="q-head"><span class="q-num">Q13</span><span class="q-diff">Easy</span></div><div class="q-body"><p>A car travels \(240\) miles in \(4\) hours. What is its average speed?</p></div><ul class="choices"><li><label><input type="radio" name="q12" value="0"><span><p>\(60\) mph</p></span></label></li><li><label><input type="radio" name="q12" value="1"><span><p>\(960\) mph</p></span></label></li><li><label><input type="radio" name="q12" value="2"><span><p>\(236\) mph</p></span></label></li><li><label><input type="radio" name="q12" value="3"><span><p>\(40\) mph</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Speed \(= \frac{\text{distance}}{\text{time}} = \frac{240}{4} = 60\) mph. The trap 960 multiplies instead of dividing. Pro tip: &#x27;per hour&#x27; means divide the distance by the number of hours.</p></div></div><div class="q" id="q13"><div class="q-head"><span class="q-num">Q14</span><span class="q-diff">Easy</span></div><div class="q-body"><p>A train travels at \(65\) miles per hour for \(3\) hours. How far does it go?</p></div><ul class="choices"><li><label><input type="radio" name="q13" value="0"><span><p>\(195\) miles</p></span></label></li><li><label><input type="radio" name="q13" value="1"><span><p>\(68\) miles</p></span></label></li><li><label><input type="radio" name="q13" value="2"><span><p>\(21.7\) miles</p></span></label></li><li><label><input type="radio" name="q13" value="3"><span><p>\(62\) miles</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Distance \(= \text{rate} \times \text{time} = 65 \times 3 = 195\) miles. The trap 21.7 divides instead of multiplying. Pro tip: distance equals rate times time -- when you know the speed and the hours, multiply.</p></div></div><div class="q" id="q14"><div class="q-head"><span class="q-num">Q15</span><span class="q-diff">Medium</span></div><div class="q-body"><p>On a map, \(1\) inch represents \(50\) miles. How many miles apart are two towns that are \(3.5\) inches apart on the map?</p></div><ul class="choices"><li><label><input type="radio" name="q14" value="0"><span><p>\(175\) miles</p></span></label></li><li><label><input type="radio" name="q14" value="1"><span><p>\(53.5\) miles</p></span></label></li><li><label><input type="radio" name="q14" value="2"><span><p>\(14.3\) miles</p></span></label></li><li><label><input type="radio" name="q14" value="3"><span><p>\(142.9\) miles</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Each inch is 50 miles, so \(3.5 \times 50 = 175\) miles. The trap 14.3 divides \(50 \div 3.5\). Pro tip: set up a proportion, \(\frac{1\text{ in}}{50\text{ mi}} = \frac{3.5\text{ in}}{x}\), and keep inches across from inches.</p></div></div><div class="q" id="q15"><div class="q-head"><span class="q-num">Q16</span><span class="q-diff">Easy</span></div><div class="q-body"><p>What is the mean (average) of \(12,\ 15,\ 18,\ 21,\ 24\)?</p></div><ul class="choices"><li><label><input type="radio" name="q15" value="0"><span><p>\(18\)</p></span></label></li><li><label><input type="radio" name="q15" value="1"><span><p>\(21\)</p></span></label></li><li><label><input type="radio" name="q15" value="2"><span><p>\(90\)</p></span></label></li><li><label><input type="radio" name="q15" value="3"><span><p>\(15\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Add them: \(12+15+18+21+24 = 90\). Divide by 5: \(90 \div 5 = 18\). The trap 90 forgets to divide. Pro tip: mean = total divided by how many values there are.</p></div></div><div class="q" id="q16"><div class="q-head"><span class="q-num">Q17</span><span class="q-diff">Medium</span></div><div class="q-body"><p>What is the median of \(3,\ 8,\ 2,\ 10,\ 6,\ 5\)?</p></div><ul class="choices"><li><label><input type="radio" name="q16" value="0"><span><p>\(5.5\)</p></span></label></li><li><label><input type="radio" name="q16" value="1"><span><p>\(6\)</p></span></label></li><li><label><input type="radio" name="q16" value="2"><span><p>\(5\)</p></span></label></li><li><label><input type="radio" name="q16" value="3"><span><p>\(8\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Sort first: \(2, 3, 5, 6, 8, 10\). With an even count, average the two middle values: \(\frac{5+6}{2} = 5.5\). The trap 5 or 6 picks just one middle value. Pro tip: always sort the list, and average the middle two when there&#x27;s an even number of values.</p></div></div><div class="q" id="q17"><div class="q-head"><span class="q-num">Q18</span><span class="q-diff">Easy</span></div><div class="q-body"><p>For the data set \(4,\ 7,\ 7,\ 9,\ 12\), what is the range?</p></div><ul class="choices"><li><label><input type="radio" name="q17" value="0"><span><p>\(8\)</p></span></label></li><li><label><input type="radio" name="q17" value="1"><span><p>\(7\)</p></span></label></li><li><label><input type="radio" name="q17" value="2"><span><p>\(5\)</p></span></label></li><li><label><input type="radio" name="q17" value="3"><span><p>\(12\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Range \(= \text{largest} - \text{smallest} = 12 - 4 = 8\). The trap 7 is the mode (the most frequent value), not the range. Pro tip: range measures spread -- subtract the smallest value from the largest.</p></div></div><div class="q" id="q18"><div class="q-head"><span class="q-num">Q19</span><span class="q-diff">Medium</span></div><div class="q-body"><p>A spinner has \(8\) equal sections, \(3\) of them red. What is the probability of landing on red?</p></div><ul class="choices"><li><label><input type="radio" name="q18" value="0"><span><p>\(\frac{3}{8}\)</p></span></label></li><li><label><input type="radio" name="q18" value="1"><span><p>\(\frac{3}{5}\)</p></span></label></li><li><label><input type="radio" name="q18" value="2"><span><p>\(\frac{5}{8}\)</p></span></label></li><li><label><input type="radio" name="q18" value="3"><span><p>\(\frac{1}{3}\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Probability \(= \frac{\text{favorable}}{\text{total}} = \frac{3}{8}\). The trap \(\frac{3}{5}\) compares red to non-red instead of to the total. Pro tip: probability is the wanted count over the TOTAL count.</p></div></div><div class="q" id="q19"><div class="q-head"><span class="q-num">Q20</span><span class="q-diff">Medium</span></div><div class="q-body"><p>Use the scatter plot below.</p>
+<figure class="chart">
+<svg viewBox="0 0 350 250" role="img" aria-label="Scatter plot with a positive trend line" xmlns="http://www.w3.org/2000/svg" style="max-width:460px;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif">
+  <text x="175" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Positive Association</text>
+  <line x1="48" y1="30" x2="48" y2="205" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="48" y1="205" x2="320" y2="205" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="62" y1="184" x2="298" y2="60" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 4"/>
+  <g fill="#2563eb">
+    <circle cx="70" cy="174" r="4"/><circle cx="95" cy="160" r="4"/><circle cx="122" cy="150" r="4"/><circle cx="148" cy="130" r="4"/>
+    <circle cx="172" cy="126" r="4"/><circle cx="200" cy="108" r="4"/><circle cx="228" cy="91" r="4"/><circle cx="262" cy="77" r="4"/><circle cx="288" cy="63" r="4"/>
+  </g>
+  <text x="184" y="232" text-anchor="middle" font-size="10" fill="#6b7280">As x increases, y tends to increase.</text>
+</svg><figcaption>A scatter plot of points rising from lower-left to upper-right</figcaption></figure>
+<p>What kind of relationship does the scatter plot show between the two variables?</p></div><ul class="choices"><li><label><input type="radio" name="q19" value="0"><span><p>A positive (increasing) relationship</p></span></label></li><li><label><input type="radio" name="q19" value="1"><span><p>A negative (decreasing) relationship</p></span></label></li><li><label><input type="radio" name="q19" value="2"><span><p>No relationship at all</p></span></label></li><li><label><input type="radio" name="q19" value="3"><span><p>A perfectly horizontal relationship</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>The points rise from lower-left to upper-right, so as one variable increases the other tends to increase -- a positive relationship. The trap &#x27;negative&#x27; describes points that fall. Pro tip: up-to-the-right is positive; down-to-the-right is negative.</p></div></div><div class="q" id="q20"><div class="q-head"><span class="q-num">Q21</span><span class="q-diff">Easy</span></div><div class="q-body"><p>Use the rectangle below.</p>
+<figure class="chart">
+<svg viewBox="0 0 320 210" role="img" aria-label="Rectangle 8 cm by 5 cm" xmlns="http://www.w3.org/2000/svg" style="max-width:400px;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif">
+  <text x="160" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Area of a Rectangle</text>
+  <rect x="65" y="52" width="190" height="95" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="160" y="44" text-anchor="middle" font-size="11.5" fill="#1a1a1a">length = 8 cm</text>
+  <text x="52" y="100" text-anchor="middle" font-size="11.5" fill="#1a1a1a" transform="rotate(-90 52 100)">width = 5 cm</text>
+  <text x="160" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a1a">A = l × w = 8 × 5 = 40 cm²</text>
+</svg><figcaption>A rectangle with a length and a width labeled</figcaption></figure>
+<p>A rectangle is \(12\) cm long and \(7\) cm wide. What is its area?</p></div><ul class="choices"><li><label><input type="radio" name="q20" value="0"><span><p>\(84\ \text{cm}^2\)</p></span></label></li><li><label><input type="radio" name="q20" value="1"><span><p>\(38\ \text{cm}^2\)</p></span></label></li><li><label><input type="radio" name="q20" value="2"><span><p>\(19\ \text{cm}^2\)</p></span></label></li><li><label><input type="radio" name="q20" value="3"><span><p>\(42\ \text{cm}^2\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Area \(= l \times w = 12 \times 7 = 84\ \text{cm}^2\). The trap 38 is the perimeter \((2\times12 + 2\times7)\). Pro tip: area multiplies the sides and uses square units; perimeter adds them.</p></div></div><div class="q" id="q21"><div class="q-head"><span class="q-num">Q22</span><span class="q-diff">Easy</span></div><div class="q-body"><p>What is the area of a triangle with a base of \(14\) cm and a height of \(9\) cm?</p></div><ul class="choices"><li><label><input type="radio" name="q21" value="0"><span><p>\(63\ \text{cm}^2\)</p></span></label></li><li><label><input type="radio" name="q21" value="1"><span><p>\(126\ \text{cm}^2\)</p></span></label></li><li><label><input type="radio" name="q21" value="2"><span><p>\(23\ \text{cm}^2\)</p></span></label></li><li><label><input type="radio" name="q21" value="3"><span><p>\(46\ \text{cm}^2\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>\(A = \frac{1}{2}bh = \frac{1}{2}(14)(9) = 63\ \text{cm}^2\). The trap 126 forgets the \(\frac{1}{2}\). Pro tip: every triangle area starts with one-half of base times height.</p></div></div><div class="q" id="q22"><div class="q-head"><span class="q-num">Q23</span><span class="q-diff">Medium</span></div><div class="q-body"><p>What is the area of a circle with a radius of \(5\) cm? Use \(\pi \approx 3.14\).</p></div><ul class="choices"><li><label><input type="radio" name="q22" value="0"><span><p>\(78.5\ \text{cm}^2\)</p></span></label></li><li><label><input type="radio" name="q22" value="1"><span><p>\(31.4\ \text{cm}^2\)</p></span></label></li><li><label><input type="radio" name="q22" value="2"><span><p>\(15.7\ \text{cm}^2\)</p></span></label></li><li><label><input type="radio" name="q22" value="3"><span><p>\(25\ \text{cm}^2\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>\(A = \pi r^2 = 3.14 \times 5^2 = 3.14 \times 25 = 78.5\ \text{cm}^2\). The trap 31.4 finds the circumference \((2\pi r)\) instead. Pro tip: area uses \(r^2\); circumference uses \(2\pi r\) -- don&#x27;t mix them up.</p></div></div><div class="q" id="q23"><div class="q-head"><span class="q-num">Q24</span><span class="q-diff">Medium</span></div><div class="q-body"><p>What is the circumference of a circle with a radius of \(7\) cm? Use \(\pi \approx 3.14\).</p></div><ul class="choices"><li><label><input type="radio" name="q23" value="0"><span><p>\(\approx 44\ \text{cm}\)</p></span></label></li><li><label><input type="radio" name="q23" value="1"><span><p>\(\approx 153.9\ \text{cm}\)</p></span></label></li><li><label><input type="radio" name="q23" value="2"><span><p>\(\approx 22\ \text{cm}\)</p></span></label></li><li><label><input type="radio" name="q23" value="3"><span><p>\(\approx 14\ \text{cm}\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>\(C = 2\pi r = 2 \times 3.14 \times 7 = 43.96 \approx 44\) cm. The trap 153.9 is the area \((\pi r^2)\). Pro tip: circumference is a length \((2\pi r)\); area is a region \((\pi r^2)\).</p></div></div><div class="q" id="q24"><div class="q-head"><span class="q-num">Q25</span><span class="q-diff">Easy</span></div><div class="q-body"><p>Use the box below.</p>
+<figure class="chart">
+<svg viewBox="0 0 320 240" role="img" aria-label="Rectangular prism 5 by 4 by 3" xmlns="http://www.w3.org/2000/svg" style="max-width:400px;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif">
+  <text x="160" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Rectangular Prism (Box)</text>
+  <polygon points="70,95 200,95 240,60 110,60" fill="#bfdbfe" stroke="#2563eb" stroke-width="1.5"/>
+  <polygon points="200,95 240,60 240,155 200,190" fill="#93c5fd" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="70" y="95" width="130" height="95" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="135" y="208" text-anchor="middle" font-size="11.5" fill="#1a1a1a">length = 5</text>
+  <text x="60" y="145" text-anchor="middle" font-size="11.5" fill="#1a1a1a" transform="rotate(-90 60 145)">height = 3</text>
+  <text x="228" y="80" text-anchor="start" font-size="11.5" fill="#1a1a1a">width = 4</text>
+  <text x="160" y="228" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a1a">V = l × w × h = 5 × 4 × 3 = 60</text>
+</svg><figcaption>A rectangular box with length, width, and height labeled</figcaption></figure>
+<p>What is the volume of a box measuring \(5 \times 4 \times 3\)?</p></div><ul class="choices"><li><label><input type="radio" name="q24" value="0"><span><p>\(60\)</p></span></label></li><li><label><input type="radio" name="q24" value="1"><span><p>\(12\)</p></span></label></li><li><label><input type="radio" name="q24" value="2"><span><p>\(47\)</p></span></label></li><li><label><input type="radio" name="q24" value="3"><span><p>\(23\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Volume multiplies all three dimensions: \(5 \times 4 \times 3 = 60\). The trap 12 multiplies only two of them. Pro tip: volume uses all three sides and cubic units.</p></div></div><div class="q" id="q25"><div class="q-head"><span class="q-num">Q26</span><span class="q-diff">Hard</span></div><div class="q-body"><p>A cylinder has a radius of \(3\) cm and a height of \(10\) cm. What is its volume? Use \(\pi \approx 3.14\).</p></div><ul class="choices"><li><label><input type="radio" name="q25" value="0"><span><p>\(\approx 282.6\ \text{cm}^3\)</p></span></label></li><li><label><input type="radio" name="q25" value="1"><span><p>\(\approx 94.2\ \text{cm}^3\)</p></span></label></li><li><label><input type="radio" name="q25" value="2"><span><p>\(\approx 188.4\ \text{cm}^3\)</p></span></label></li><li><label><input type="radio" name="q25" value="3"><span><p>\(\approx 90\ \text{cm}^3\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>\(V = \pi r^2 h = 3.14 \times 3^2 \times 10 = 3.14 \times 9 \times 10 = 282.6\ \text{cm}^3\). The trap 188.4 uses \(2r\) instead of \(r^2\) \((2\pi r h)\). Pro tip: square the radius first, then multiply by the height and \(\pi\).</p></div></div><div class="q" id="q26"><div class="q-head"><span class="q-num">Q27</span><span class="q-diff">Medium</span></div><div class="q-body"><p>Use the right triangle below.</p>
+<figure class="chart">
+<svg viewBox="0 0 320 240" role="img" aria-label="Right triangle with legs a and b and hypotenuse c" xmlns="http://www.w3.org/2000/svg" style="max-width:400px;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif">
+  <text x="160" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">The Pythagorean Theorem</text>
+  <polygon points="80,65 80,175 250,175" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <polygon points="80,175 80,160 95,160 95,175" fill="none" stroke="#dc2626" stroke-width="1.2"/>
+  <text x="70" y="122" text-anchor="end" font-size="12" font-weight="700" fill="#1a1a1a">a</text>
+  <text x="165" y="193" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a1a">b</text>
+  <text x="173" y="112" text-anchor="start" font-size="12" font-weight="700" fill="#dc2626">c</text>
+  <text x="120" y="205" text-anchor="middle" font-size="9.5" fill="#6b7280">legs a, b · hypotenuse c (opposite the right angle)</text>
+  <text x="160" y="226" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a1a">a² + b² = c²</text>
+</svg><figcaption>A right triangle with two legs and a hypotenuse</figcaption></figure>
+<p>The two legs of a right triangle are \(6\) and \(8\). How long is the hypotenuse?</p></div><ul class="choices"><li><label><input type="radio" name="q26" value="0"><span><p>\(10\)</p></span></label></li><li><label><input type="radio" name="q26" value="1"><span><p>\(14\)</p></span></label></li><li><label><input type="radio" name="q26" value="2"><span><p>\(100\)</p></span></label></li><li><label><input type="radio" name="q26" value="3"><span><p>\(48\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>\(c = \sqrt{6^2 + 8^2} = \sqrt{36 + 64} = \sqrt{100} = 10\). The trap 14 just adds the legs; 100 forgets the square root. Pro tip: 6-8-10 is the 3-4-5 triple doubled.</p></div></div><div class="q" id="q27"><div class="q-head"><span class="q-num">Q28</span><span class="q-diff">Hard</span></div><div class="q-body"><p>A right triangle has a hypotenuse of \(13\) and one leg of \(5\). How long is the other leg?</p></div><ul class="choices"><li><label><input type="radio" name="q27" value="0"><span><p>\(12\)</p></span></label></li><li><label><input type="radio" name="q27" value="1"><span><p>\(18\)</p></span></label></li><li><label><input type="radio" name="q27" value="2"><span><p>\(8\)</p></span></label></li><li><label><input type="radio" name="q27" value="3"><span><p>\(\sqrt{194}\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Use \(a^2 + b^2 = c^2\): \(5^2 + b^2 = 13^2\), so \(b^2 = 169 - 25 = 144\) and \(b = 12\). The trap \(\sqrt{194}\) adds the squares instead of subtracting. Pro tip: when you know the hypotenuse, subtract the known leg&#x27;s square from the hypotenuse&#x27;s square.</p></div></div><div class="q" id="q28"><div class="q-head"><span class="q-num">Q29</span><span class="q-diff">Hard</span></div><div class="q-body"><p>Use the similar rectangles below.</p>
+<figure class="chart">
+<svg viewBox="0 0 540 250" role="img" aria-label="Similar rectangles with side lengths scaled by a factor of three" xmlns="http://www.w3.org/2000/svg" style="max-width:660px;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif">
+  <text x="270" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Similar Figures and Scale Factor</text>
+  <rect x="78" y="80" width="96" height="64" fill="#dbeafe" stroke="#2563eb" stroke-width="1.8"/>
+  <rect x="300" y="48" width="144" height="96" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
+  <g font-size="11" fill="#1a1a1a" text-anchor="middle">
+    <text x="126" y="70">4 cm</text><text x="64" y="116" transform="rotate(-90 64 116)">3 cm</text>
+    <text x="372" y="38">12 cm</text><text x="286" y="98" transform="rotate(-90 286 98)">9 cm</text>
+  </g>
+  <path d="M195,112 H270" stroke="#9ca3af" stroke-width="2" fill="none"/>
+  <polygon points="276,112 265,106 265,118" fill="#9ca3af"/>
+  <text x="236" y="96" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a1a">x3</text>
+  <text x="270" y="188" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a1a">Scale factor = 12 / 4 = 9 / 3 = 3</text>
+  <text x="270" y="216" text-anchor="middle" font-size="10.5" fill="#6b7280">Similar figures keep the same shape; every corresponding length uses the same multiplier.</text>
+</svg><figcaption>A small rectangle and a larger, same-shaped rectangle</figcaption></figure>
+<p>A small rectangle is \(4\) by \(6\). A larger, similar rectangle has a width of \(10\) (matching the \(4\) side). What is its length?</p></div><ul class="choices"><li><label><input type="radio" name="q28" value="0"><span><p>\(15\)</p></span></label></li><li><label><input type="radio" name="q28" value="1"><span><p>\(12\)</p></span></label></li><li><label><input type="radio" name="q28" value="2"><span><p>\(8.5\)</p></span></label></li><li><label><input type="radio" name="q28" value="3"><span><p>\(9.6\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>The scale factor is \(10 \div 4 = 2.5\), so the length is \(6 \times 2.5 = 15\). The trap 12 adds the difference \((6 + 6)\) instead of scaling. Pro tip: similar shapes scale by multiplying every side by the same factor.</p></div></div><div class="q" id="q29"><div class="q-head"><span class="q-num">Q30</span><span class="q-diff">Easy</span></div><div class="q-body"><p>Use the coordinate plane below.</p>
+<figure class="chart">
+<svg viewBox="0 0 260 260" role="img" aria-label="Coordinate plane with four labeled quadrants and the point (3, 2)" xmlns="http://www.w3.org/2000/svg" style="max-width:340px;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif">
+  <text x="130" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a1a">The Coordinate Plane</text>
+  <g stroke="#e5e7eb">
+    <line x1="50" y1="50" x2="50" y2="230"/><line x1="90" y1="50" x2="90" y2="230"/><line x1="170" y1="50" x2="170" y2="230"/><line x1="210" y1="50" x2="210" y2="230"/>
+    <line x1="50" y1="50" x2="210" y2="50"/><line x1="50" y1="90" x2="210" y2="90"/><line x1="50" y1="170" x2="210" y2="170"/><line x1="50" y1="210" x2="210" y2="210"/>
+  </g>
+  <line x1="50" y1="130" x2="210" y2="130" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="130" y1="50" x2="130" y2="230" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="214" y="126" font-size="10" fill="#6b7280">x</text>
+  <text x="135" y="58" font-size="10" fill="#6b7280">y</text>
+  <g font-size="11" font-weight="700" fill="#9ca3af" text-anchor="middle">
+    <text x="180" y="80">I</text><text x="80" y="80">II</text><text x="80" y="190">III</text><text x="180" y="190">IV</text>
+  </g>
+  <circle cx="190" cy="90" r="4" fill="#2563eb"/>
+  <text x="196" y="84" font-size="10.5" font-weight="700" fill="#2563eb">(3, 2)</text>
+</svg><figcaption>The four quadrants of the coordinate plane</figcaption></figure>
+<p>In which quadrant does the point \((-3,\ 5)\) lie?</p></div><ul class="choices"><li><label><input type="radio" name="q29" value="0"><span><p>Quadrant II</p></span></label></li><li><label><input type="radio" name="q29" value="1"><span><p>Quadrant I</p></span></label></li><li><label><input type="radio" name="q29" value="2"><span><p>Quadrant III</p></span></label></li><li><label><input type="radio" name="q29" value="3"><span><p>Quadrant IV</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>A negative x and a positive y put the point in the upper-left, Quadrant II. The trap Quadrant III needs both coordinates negative. Pro tip: quadrants go counter-clockwise starting from the upper-right (I), so (-, +) is II.</p></div></div><div class="q" id="q30"><div class="q-head"><span class="q-num">Q31</span><span class="q-diff">Medium</span></div><div class="q-body"><p>What is the slope of the line through the points \((1,\ 2)\) and \((4,\ 11)\)?</p></div><ul class="choices"><li><label><input type="radio" name="q30" value="0"><span><p>\(3\)</p></span></label></li><li><label><input type="radio" name="q30" value="1"><span><p>\(\frac{1}{3}\)</p></span></label></li><li><label><input type="radio" name="q30" value="2"><span><p>\(9\)</p></span></label></li><li><label><input type="radio" name="q30" value="3"><span><p>\(13\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Slope \(= \frac{y_2 - y_1}{x_2 - x_1} = \frac{11 - 2}{4 - 1} = \frac{9}{3} = 3\). The trap \(\frac{1}{3}\) flips the fraction (run over rise). Pro tip: slope is rise over run -- change in y on top.</p></div></div><div class="q" id="q31"><div class="q-head"><span class="q-num">Q32</span><span class="q-diff">Easy</span></div><div class="q-body"><p>Simplify: \(3x + 5 - x + 2\).</p></div><ul class="choices"><li><label><input type="radio" name="q31" value="0"><span><p>\(2x + 7\)</p></span></label></li><li><label><input type="radio" name="q31" value="1"><span><p>\(4x + 7\)</p></span></label></li><li><label><input type="radio" name="q31" value="2"><span><p>\(2x + 3\)</p></span></label></li><li><label><input type="radio" name="q31" value="3"><span><p>\(9x\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Combine like terms: \(3x - x = 2x\) and \(5 + 2 = 7\), giving \(2x + 7\). The trap \(4x+7\) adds the x-terms instead of subtracting. Pro tip: only combine terms that share the same variable.</p></div></div><div class="q" id="q32"><div class="q-head"><span class="q-num">Q33</span><span class="q-diff">Easy</span></div><div class="q-body"><p>Use the distributive property to simplify: \(4(2x - 3)\).</p></div><ul class="choices"><li><label><input type="radio" name="q32" value="0"><span><p>\(8x - 12\)</p></span></label></li><li><label><input type="radio" name="q32" value="1"><span><p>\(8x - 3\)</p></span></label></li><li><label><input type="radio" name="q32" value="2"><span><p>\(6x - 12\)</p></span></label></li><li><label><input type="radio" name="q32" value="3"><span><p>\(2x - 12\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Multiply 4 by both terms: \(4 \times 2x = 8x\) and \(4 \times (-3) = -12\), giving \(8x - 12\). The trap \(8x - 3\) forgets to distribute to the \(-3\). Pro tip: the outside number multiplies EVERY term inside the parentheses.</p></div></div><div class="q" id="q33"><div class="q-head"><span class="q-num">Q34</span><span class="q-diff">Medium</span></div><div class="q-body"><p>Evaluate \(3x^2 - 2x\) when \(x = 4\).</p></div><ul class="choices"><li><label><input type="radio" name="q33" value="0"><span><p>\(40\)</p></span></label></li><li><label><input type="radio" name="q33" value="1"><span><p>\(16\)</p></span></label></li><li><label><input type="radio" name="q33" value="2"><span><p>\(56\)</p></span></label></li><li><label><input type="radio" name="q33" value="3"><span><p>\(136\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>\(3(4)^2 - 2(4) = 3(16) - 8 = 48 - 8 = 40\). The trap 136 squares \(3 \times 4\) first \(((12)^2 - 8)\). Pro tip: do the exponent before the multiplication -- square the 4, then multiply by 3.</p></div></div><div class="q" id="q34"><div class="q-head"><span class="q-num">Q35</span><span class="q-diff">Easy</span></div><div class="q-body"><p>Solve for \(x\): \(5x - 7 = 18\).</p></div><ul class="choices"><li><label><input type="radio" name="q34" value="0"><span><p>\(x = 5\)</p></span></label></li><li><label><input type="radio" name="q34" value="1"><span><p>\(x = 25\)</p></span></label></li><li><label><input type="radio" name="q34" value="2"><span><p>\(x = 2.2\)</p></span></label></li><li><label><input type="radio" name="q34" value="3"><span><p>\(x = 11\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Add 7: \(5x = 25\). Divide by 5: \(x = 5\). The trap 25 stops before dividing. Pro tip: undo the subtraction first, then undo the multiplication.</p></div></div><div class="q" id="q35"><div class="q-head"><span class="q-num">Q36</span><span class="q-diff">Medium</span></div><div class="q-body"><p>Solve for \(x\): \(\dfrac{x}{3} + 4 = 9\).</p></div><ul class="choices"><li><label><input type="radio" name="q35" value="0"><span><p>\(x = 15\)</p></span></label></li><li><label><input type="radio" name="q35" value="1"><span><p>\(x = 39\)</p></span></label></li><li><label><input type="radio" name="q35" value="2"><span><p>\(x = 1.67\)</p></span></label></li><li><label><input type="radio" name="q35" value="3"><span><p>\(x = 5\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Subtract 4: \(\frac{x}{3} = 5\). Multiply by 3: \(x = 15\). The trap 39 multiplies before subtracting \((9 \times 3 + ...)\). Pro tip: clear the \(+4\) first, then multiply both sides by 3 to undo the division.</p></div></div><div class="q" id="q36"><div class="q-head"><span class="q-num">Q37</span><span class="q-diff">Medium</span></div><div class="q-body"><p>Solve for \(x\): \(3x + 4 = x + 12\).</p></div><ul class="choices"><li><label><input type="radio" name="q36" value="0"><span><p>\(x = 4\)</p></span></label></li><li><label><input type="radio" name="q36" value="1"><span><p>\(x = 8\)</p></span></label></li><li><label><input type="radio" name="q36" value="2"><span><p>\(x = 2\)</p></span></label></li><li><label><input type="radio" name="q36" value="3"><span><p>\(x = 16\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Subtract \(x\) from both sides: \(2x + 4 = 12\). Subtract 4: \(2x = 8\). Divide by 2: \(x = 4\). The trap 8 stops before dividing. Pro tip: collect the variables on one side first, then solve the simpler equation.</p></div></div><div class="q" id="q37"><div class="q-head"><span class="q-num">Q38</span><span class="q-diff">Medium</span></div><div class="q-body"><p>A phone plan costs \$40 per month plus \$0.10 per text. What is the cost in a month with \(100\) texts?</p></div><ul class="choices"><li><label><input type="radio" name="q37" value="0"><span><p>\$50</p></span></label></li><li><label><input type="radio" name="q37" value="1"><span><p>\$140</p></span></label></li><li><label><input type="radio" name="q37" value="2"><span><p>\$4{,}040</p></span></label></li><li><label><input type="radio" name="q37" value="3"><span><p>\$50.10</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>The texts cost \(0.10 \times 100 = \$10\), plus the \$40 base: \(40 + 10 = \$50\). The trap \$140 treats each text as \$1. Pro tip: build the expression \(40 + 0.10t\), then substitute \(t = 100\).</p></div></div><div class="q" id="q38"><div class="q-head"><span class="q-num">Q39</span><span class="q-diff">Medium</span></div><div class="q-body"><p>Use the number line idea below.</p>
+<figure class="chart">
+<svg viewBox="0 0 340 90" role="img" aria-label="Number line showing the solution x greater than 2" xmlns="http://www.w3.org/2000/svg" style="max-width:460px;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif">
+  <text x="170" y="18" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a1a">Solution of  x &gt; 2</text>
+  <line x1="20" y1="48" x2="320" y2="48" stroke="#9ca3af" stroke-width="1.5"/>
+  <polygon points="320,48 312,44 312,52" fill="#9ca3af"/>
+  <polygon points="20,48 28,44 28,52" fill="#9ca3af"/>
+  <line x1="170" y1="48" x2="316" y2="48" stroke="#2563eb" stroke-width="4"/>
+  <polygon points="320,48 310,42 310,54" fill="#2563eb"/>
+  <circle cx="170" cy="48" r="6" fill="#fff" stroke="#2563eb" stroke-width="2.5"/>
+  <g stroke="#9ca3af">
+    <line x1="30" y1="44" x2="30" y2="52"/><line x1="65" y1="44" x2="65" y2="52"/>
+    <line x1="100" y1="44" x2="100" y2="52"/><line x1="135" y1="44" x2="135" y2="52"/>
+    <line x1="170" y1="44" x2="170" y2="52"/><line x1="205" y1="44" x2="205" y2="52"/>
+    <line x1="240" y1="44" x2="240" y2="52"/><line x1="275" y1="44" x2="275" y2="52"/>
+    <line x1="310" y1="44" x2="310" y2="52"/>
+  </g>
+  <g font-size="11" fill="#1a1a1a" text-anchor="middle">
+    <text x="30" y="70">-2</text><text x="65" y="70">-1</text><text x="100" y="70">0</text>
+    <text x="135" y="70">1</text><text x="170" y="70">2</text><text x="205" y="70">3</text>
+    <text x="240" y="70">4</text><text x="275" y="70">5</text><text x="310" y="70">6</text>
+  </g>
+  <text x="170" y="36" text-anchor="middle" font-size="9" fill="#6b7280">open circle = 2 not included</text>
+</svg><figcaption>A number line showing the solution to an inequality</figcaption></figure>
+<p>Solve the inequality \(3x - 2 > 10\).</p></div><ul class="choices"><li><label><input type="radio" name="q38" value="0"><span><p>\(x > 4\)</p></span></label></li><li><label><input type="radio" name="q38" value="1"><span><p>\(x < 4\)</p></span></label></li><li><label><input type="radio" name="q38" value="2"><span><p>\(x > 2.67\)</p></span></label></li><li><label><input type="radio" name="q38" value="3"><span><p>\(x > 12\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Add 2: \(3x > 12\). Divide by 3: \(x > 4\). The sign stays the same because 3 is positive. The trap \(x < 4\) flips the sign for no reason. Pro tip: only flip the inequality when you multiply or divide by a NEGATIVE number.</p></div></div><div class="q" id="q39"><div class="q-head"><span class="q-num">Q40</span><span class="q-diff">Hard</span></div><div class="q-body"><p>Solve the inequality \(-2x + 1 < 9\).</p></div><ul class="choices"><li><label><input type="radio" name="q39" value="0"><span><p>\(x > -4\)</p></span></label></li><li><label><input type="radio" name="q39" value="1"><span><p>\(x < -4\)</p></span></label></li><li><label><input type="radio" name="q39" value="2"><span><p>\(x > 4\)</p></span></label></li><li><label><input type="radio" name="q39" value="3"><span><p>\(x < 4\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Subtract 1: \(-2x < 8\). Now divide by \(-2\) and FLIP the sign: \(x > -4\). The trap \(x < -4\) forgets to flip. Pro tip: dividing or multiplying an inequality by a negative number always reverses the direction of the sign.</p></div></div><div class="q" id="q40"><div class="q-head"><span class="q-num">Q41</span><span class="q-diff">Hard</span></div><div class="q-body"><p>Solve: \(x^2 + 5x + 6 = 0\).</p></div><ul class="choices"><li><label><input type="radio" name="q40" value="0"><span><p>\(x = -2\) or \(x = -3\)</p></span></label></li><li><label><input type="radio" name="q40" value="1"><span><p>\(x = 2\) or \(x = 3\)</p></span></label></li><li><label><input type="radio" name="q40" value="2"><span><p>\(x = -1\) or \(x = -6\)</p></span></label></li><li><label><input type="radio" name="q40" value="3"><span><p>\(x = 1\) or \(x = 6\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Factor into \((x+2)(x+3) = 0\), so \(x = -2\) or \(x = -3\). The trap \(x = 2, 3\) forgets the signs flip when you solve each factor. Pro tip: find two numbers that multiply to 6 and add to 5 (that&#x27;s 2 and 3), then change their signs.</p></div></div><div class="q" id="q41"><div class="q-head"><span class="q-num">Q42</span><span class="q-diff">Hard</span></div><div class="q-body"><p>Solve the system: \(x + y = 10\) and \(x - y = 4\).</p></div><ul class="choices"><li><label><input type="radio" name="q41" value="0"><span><p>\(x = 7,\ y = 3\)</p></span></label></li><li><label><input type="radio" name="q41" value="1"><span><p>\(x = 3,\ y = 7\)</p></span></label></li><li><label><input type="radio" name="q41" value="2"><span><p>\(x = 6,\ y = 4\)</p></span></label></li><li><label><input type="radio" name="q41" value="3"><span><p>\(x = 5,\ y = 5\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Add the two equations: \(2x = 14\), so \(x = 7\). Then \(7 + y = 10\) gives \(y = 3\). The trap \(x=3, y=7\) swaps the two values. Pro tip: adding the equations cancels \(y\) and solves for \(x\) in one step.</p></div></div><div class="q" id="q42"><div class="q-head"><span class="q-num">Q43</span><span class="q-diff">Easy</span></div><div class="q-body"><p>If \(f(x) = 2x + 3\), what is \(f(5)\)?</p></div><ul class="choices"><li><label><input type="radio" name="q42" value="0"><span><p>\(13\)</p></span></label></li><li><label><input type="radio" name="q42" value="1"><span><p>\(10\)</p></span></label></li><li><label><input type="radio" name="q42" value="2"><span><p>\(16\)</p></span></label></li><li><label><input type="radio" name="q42" value="3"><span><p>\(25\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Substitute \(x = 5\): \(f(5) = 2(5) + 3 = 10 + 3 = 13\). The trap 10 forgets to add the 3. Pro tip: \(f(5)\) means replace every \(x\) with 5, then simplify.</p></div></div><div class="q" id="q43"><div class="q-head"><span class="q-num">Q44</span><span class="q-diff">Medium</span></div><div class="q-body"><p>Use the line below.</p>
+<figure class="chart">
+<svg viewBox="0 0 520 290" role="img" aria-label="Function table for y equals 2x plus 1 connected to its line graph" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,sans-serif">
+  <text x="260" y="18" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Table, Rule, and Graph: y = 2x + 1</text>
+  <rect x="35" y="45" width="155" height="176" rx="4" fill="#ffffff" stroke="#9ca3af"/>
+  <rect x="35" y="45" width="155" height="36" fill="#eff6ff"/>
+  <g stroke="#9ca3af">
+    <line x1="112" y1="45" x2="112" y2="221"/>
+    <line x1="35" y1="81" x2="190" y2="81"/><line x1="35" y1="116" x2="190" y2="116"/>
+    <line x1="35" y1="151" x2="190" y2="151"/><line x1="35" y1="186" x2="190" y2="186"/>
+  </g>
+  <g text-anchor="middle" font-size="12" fill="#1a1a1a">
+    <text x="74" y="68" font-weight="700">x</text><text x="151" y="68" font-weight="700">y</text>
+    <text x="74" y="104">-1</text><text x="151" y="104">-1</text>
+    <text x="74" y="139">0</text><text x="151" y="139">1</text>
+    <text x="74" y="174">1</text><text x="151" y="174">3</text>
+    <text x="74" y="209">2</text><text x="151" y="209">5</text>
+  </g>
+  <g stroke="#e5e7eb">
+    <line x1="260" y1="45" x2="260" y2="245"/><line x1="300" y1="45" x2="300" y2="245"/><line x1="340" y1="45" x2="340" y2="245"/><line x1="380" y1="45" x2="380" y2="245"/><line x1="420" y1="45" x2="420" y2="245"/><line x1="460" y1="45" x2="460" y2="245"/>
+    <line x1="240" y1="225" x2="480" y2="225"/><line x1="240" y1="185" x2="480" y2="185"/><line x1="240" y1="145" x2="480" y2="145"/><line x1="240" y1="105" x2="480" y2="105"/><line x1="240" y1="65" x2="480" y2="65"/>
+  </g>
+  <line x1="240" y1="145" x2="480" y2="145" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="340" y1="45" x2="340" y2="245" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="300" y1="185" x2="420" y2="65" stroke="#2563eb" stroke-width="2.5"/>
+  <g fill="#2563eb">
+    <circle cx="300" cy="185" r="4"/><circle cx="340" cy="125" r="4"/><circle cx="380" cy="105" r="4"/><circle cx="420" cy="65" r="4"/>
+  </g>
+  <text x="360" y="274" text-anchor="middle" font-size="10.5" fill="#6b7280">Each table row becomes a point; the constant slope makes the points line up.</text>
+</svg><figcaption>A straight line shown with its table of values</figcaption></figure>
+<p>A line has a slope of \(3\) and crosses the y-axis at \(-2\). What is its equation?</p></div><ul class="choices"><li><label><input type="radio" name="q43" value="0"><span><p>\(y = 3x - 2\)</p></span></label></li><li><label><input type="radio" name="q43" value="1"><span><p>\(y = -2x + 3\)</p></span></label></li><li><label><input type="radio" name="q43" value="2"><span><p>\(y = 3x + 2\)</p></span></label></li><li><label><input type="radio" name="q43" value="3"><span><p>\(y = -2x - 3\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Slope-intercept form is \(y = mx + b\), with \(m = 3\) (slope) and \(b = -2\) (y-intercept), giving \(y = 3x - 2\). The trap \(y = -2x + 3\) swaps the slope and intercept. Pro tip: in \(y = mx + b\), \(m\) multiplies \(x\) and \(b\) stands alone.</p></div></div><div class="q" id="q44"><div class="q-head"><span class="q-num">Q45</span><span class="q-diff">Hard</span></div><div class="q-body"><p>A colony of bacteria triples every hour. If it starts with \(5\) bacteria, how many are there after \(2\) hours?</p></div><ul class="choices"><li><label><input type="radio" name="q44" value="0"><span><p>\(45\)</p></span></label></li><li><label><input type="radio" name="q44" value="1"><span><p>\(30\)</p></span></label></li><li><label><input type="radio" name="q44" value="2"><span><p>\(15\)</p></span></label></li><li><label><input type="radio" name="q44" value="3"><span><p>\(10\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Tripling twice: \(5 \times 3 \times 3 = 5 \times 9 = 45\). The trap 30 multiplies \(5 \times 3 \times 2\), treating it as repeated addition. Pro tip: &#x27;triples each hour&#x27; means multiply by 3 for each hour -- it grows exponentially, \(5 \times 3^2\).</p></div></div><div class="q" id="q45"><div class="q-head"><span class="q-num">Q46</span><span class="q-diff">Medium</span></div><div class="q-body"><p>What is the slope of the line that passes through \((2,\ 1)\) and \((6,\ 9)\)?</p></div><ul class="choices"><li><label><input type="radio" name="q45" value="0"><span><p>\(2\)</p></span></label></li><li><label><input type="radio" name="q45" value="1"><span><p>\(\frac{1}{2}\)</p></span></label></li><li><label><input type="radio" name="q45" value="2"><span><p>\(4\)</p></span></label></li><li><label><input type="radio" name="q45" value="3"><span><p>\(8\)</p></span></label></li></ul><div class="explanation"><span class="tag">Explanation</span><p>Slope \(= \frac{9 - 1}{6 - 2} = \frac{8}{4} = 2\). The trap 8 uses only the change in y and forgets to divide by the change in x. Pro tip: slope is rise over run -- divide the y-change by the x-change.</p></div></div>
+</div>
+
+<div class="actions">
+  <button class="btn-primary" id="submit">Submit Exam</button>
+  <button class="btn-ghost" id="reset">Reset</button>
+</div>
+
+<script>
+  var TOTAL = 46;
+  var answers = {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:0,15:0,16:0,17:0,18:0,19:0,20:0,21:0,22:0,23:0,24:0,25:0,26:0,27:0,28:0,29:0,30:0,31:0,32:0,33:0,34:0,35:0,36:0,37:0,38:0,39:0,40:0,41:0,42:0,43:0,44:0,45:0};   // qid -> index of correct choice
+
+  // ---- progress counter ----
+  function updateProgress() {
+    var done = 0;
+    for (var i = 0; i < TOTAL; i++) {
+      if (document.querySelector('input[name="q' + i + '"]:checked')) done++;
+    }
+    document.getElementById('progress').textContent = done + ' / ' + TOTAL + ' answered';
+  }
+  document.addEventListener('change', function (e) {
+    if (e.target && e.target.name && e.target.name.charAt(0) === 'q') updateProgress();
+  });
+
+  // ---- countdown timer (115 minutes) ----
+  var remaining = 115 * 60;
+  var timerEl = document.getElementById('timer');
+  var ticking = setInterval(function () {
+    remaining--;
+    if (remaining <= 0) { remaining = 0; clearInterval(ticking); grade(); }
+    var m = Math.floor(remaining / 60), s = remaining % 60;
+    timerEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    if (remaining <= 600) timerEl.classList.add('warn');
+  }, 1000);
+
+  // ---- estimated GED scaled score: 0%->100, 65%->145 (pass), 100%->200 ----
+  function scaledScore(pct) {
+    var s = pct <= 0.65 ? 100 + (pct / 0.65) * 45
+                        : 145 + ((pct - 0.65) / 0.35) * 55;
+    return Math.max(100, Math.min(200, Math.round(s)));
+  }
+
+  function grade() {
+    clearInterval(ticking);
+    var correct = 0;
+    for (var i = 0; i < TOTAL; i++) {
+      var picked = document.querySelector('input[name="q' + i + '"]:checked');
+      var labels = document.querySelectorAll('#q' + i + ' .choices label');
+      labels.forEach(function (l) { l.classList.remove('correct', 'wrong'); });
+      var correctIdx = answers[i];
+      if (labels[correctIdx]) labels[correctIdx].classList.add('correct');
+      if (picked) {
+        var pickedIdx = parseInt(picked.value, 10);
+        if (pickedIdx === correctIdx) correct++;
+        else if (labels[pickedIdx]) labels[pickedIdx].classList.add('wrong');
+      }
+      var exp = document.querySelector('#q' + i + ' .explanation');
+      if (exp) exp.classList.add('show');
+    }
+    var pct = correct / TOTAL;
+    var scaled = scaledScore(pct);
+    var pass = scaled >= 145;
+    var box = document.getElementById('results');
+    box.innerHTML =
+      '<div class="score">' + correct + ' / ' + TOTAL + '</div>' +
+      '<div class="scaled">Estimated GED scaled score: <strong>' + scaled +
+      '</strong> &nbsp;(' + Math.round(pct * 100) + '% correct)</div>' +
+      '<span class="pill ' + (pass ? 'pass' : 'fail') + '">' +
+      (pass ? 'PASS' : 'NOT YET') + ' &middot; 145 needed</span>' +
+      '<p class="note">The scaled score is an estimate for practice only; the official GED ' +
+      'conversion is not public. Review the explanations below each question.</p>';
+    box.classList.add('show');
+    box.scrollIntoView({ behavior: 'smooth' });
+    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([box]);
+  }
+
+  document.getElementById('submit').addEventListener('click', grade);
+  document.getElementById('reset').addEventListener('click', function () {
+    if (!confirm('Clear all answers and restart?')) return;
+    location.reload();
+  });
+</script>
+</body>
+</html>
